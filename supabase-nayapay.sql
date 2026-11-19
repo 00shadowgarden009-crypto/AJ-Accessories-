@@ -1,11 +1,12 @@
+-- Run this in the Supabase SQL Editor.
+-- Supabase Storage already has RLS enabled on storage.objects; do not ALTER that managed table.
+
 alter table public.orders
   add column if not exists payment_proof_path text;
 
 insert into storage.buckets (id, name, public)
 values ('payment-proofs', 'payment-proofs', false)
 on conflict (id) do update set public = false;
-
-alter table storage.objects enable row level security;
 
 drop policy if exists "Customers upload own payment proofs" on storage.objects;
 create policy "Customers upload own payment proofs"

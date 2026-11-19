@@ -10,8 +10,7 @@
     const d = frame.contentDocument;
     if (!w || !d) return;
 
-    // Resolve beside the embedded store page so this works on GitHub Pages
-    // project paths as well as a root custom domain.
+    // The image must be committed beside AJ-Accessories-personal-details.html.
     const portraitUrl = new URL('founder.jpg', frame.src).href;
 
     const style = d.createElement('style');
@@ -42,8 +41,7 @@
         padding: .9rem 1rem .85rem;
         border: 1px solid rgba(243, 208, 102, .62);
         border-radius: 14px;
-        background:
-          linear-gradient(110deg, rgba(8,8,8,.95), rgba(30,10,15,.88) 48%, rgba(8,8,8,.95));
+        background: linear-gradient(110deg, rgba(8,8,8,.95), rgba(30,10,15,.88) 48%, rgba(8,8,8,.95));
         box-shadow: 0 0 14px rgba(225, 29, 51, .35), inset 0 0 18px rgba(212, 175, 55, .08);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
@@ -68,20 +66,13 @@
         font: 700 .52rem/1.3 Inter, sans-serif;
         letter-spacing: .3em;
       }
-      #founder-title-overlay .founder-name {
-        color: #fff;
-        font: 800 clamp(.82rem, 3.4vw, 1rem)/1.35 Inter, sans-serif;
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        text-shadow: 0 0 12px rgba(255,255,255,.25), 0 2px 12px rgba(0,0,0,.9);
-      }
       #founder-title-overlay .founder-role {
         display: inline-flex;
         align-items: center;
         gap: .45rem;
-        margin-top: .38rem;
+        margin-top: .2rem;
         color: #F3D066;
-        font: 800 .62rem/1.4 Inter, sans-serif;
+        font: 800 .68rem/1.4 Inter, sans-serif;
         letter-spacing: .32em;
         text-transform: uppercase;
       }
@@ -108,11 +99,12 @@
     function pinPortrait() {
       const image = d.getElementById('hero-founder-img');
       if (!image) return;
-      image.alt = 'Muhammad Hamza Shafiq, Founder and CEO of AJ ACCERSSORES';
+      // Keep the image's alt text concise; on a failed load, clear it so the
+      // browser cannot display a long broken-image text line over the hero.
+      image.alt = 'Founder portrait';
       image.onerror = function () {
+        image.alt = '';
         image.style.display = 'none';
-        // Do not show a broken-image icon or any user upload controls if the
-        // repository image has not yet been added.
         d.getElementById('founder-placeholder-overlay')?.classList.add('hidden');
       };
       if (image.src !== portraitUrl) {
@@ -124,14 +116,12 @@
       if (frameContent && !d.getElementById('founder-title-overlay')) {
         const title = d.createElement('div');
         title.id = 'founder-title-overlay';
-        title.innerHTML = '<div class="founder-name">Muhammad Hamza Shafiq</div><div class="founder-role">Founder &amp; CEO</div>';
+        title.innerHTML = '<div class="founder-role">Founder &amp; CEO</div>';
         frameContent.appendChild(title);
       }
       d.getElementById('founder-placeholder-overlay')?.classList.add('hidden');
     }
 
-    // Disable local image upload handlers in the embedded page and ignore any
-    // portrait URL loaded from browser storage or Supabase.
     w.handleLocalPortraitUpload = function (event) {
       event?.preventDefault?.();
       if (event?.target) event.target.value = '';

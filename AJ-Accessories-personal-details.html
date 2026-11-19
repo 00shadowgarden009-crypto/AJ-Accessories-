@@ -1,0 +1,2807 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJ ACCERSSORES | Next-Generation Futuristic Mobile Accessories</title>
+    <!-- Google Fonts: Inter & Orbitron -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        aj: {
+                            red: '#B51224',
+                            redGlow: '#E11D33',
+                            gold: '#D4AF37',
+                            goldLight: '#F3D066',
+                            black: '#080808',
+                            dark: '#101010',
+                            card: '#171717',
+                            muted: '#A5A5A5'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Supabase JS SDK v2 & Lucide Icons via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary-red: #B51224;
+            --metallic-gold: #D4AF37;
+            --deep-black: #080808;
+            --dark-bg: #101010;
+            --secondary-bg: #171717;
+            --white: #FFFFFF;
+            --muted-text: #A5A5A5;
+        }
+
+        body {
+            background-color: var(--deep-black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #080808; }
+        ::-webkit-scrollbar-thumb {
+            background: #262626;
+            border-radius: 4px;
+            border: 1px solid rgba(212, 175, 55, 0.25);
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-red); }
+
+        .glass-panel {
+            background: rgba(23, 23, 23, 0.76);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-nav {
+            background: rgba(8, 8, 8, 0.88);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #F3D066 0%, #D4AF37 50%, #9E7C19 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tomorrow-gradient-text {
+            background: linear-gradient(95deg, #FF2E43 0%, #D4AF37 65%, #F3D066 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .red-gold-border { position: relative; }
+        .red-gold-border::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(181, 18, 36, 0.65), rgba(212, 175, 55, 0.55), rgba(255, 255, 255, 0.06));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* 3D Founder Portrait Stage & Dynamic Cursor Lighting */
+        .hero-stage {
+            perspective: 1300px;
+            transform-style: preserve-3d;
+        }
+
+        .founder-card-3d {
+            transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            will-change: transform;
+            clip-path: polygon(22px 0%, 100% 0%, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0% 100%, 0% 22px);
+        }
+
+        .founder-frame-glow {
+            box-shadow: 0 0 38px rgba(225, 29, 51, 0.45), 0 0 65px rgba(212, 175, 55, 0.25);
+        }
+
+        .parallax-badge {
+            transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes floatReverse {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(10px); }
+        }
+        @keyframes arcPulse {
+            0%, 100% { opacity: 0.65; filter: drop-shadow(0 0 8px rgba(225, 29, 51, 0.7)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 18px rgba(212, 175, 55, 0.9)); }
+        }
+
+        .animate-float-slow { animation: floatSlow 5.5s ease-in-out infinite; }
+        .animate-float-reverse { animation: floatReverse 6s ease-in-out infinite; }
+        .animate-arc-glow { animation: arcPulse 4s ease-in-out infinite; }
+
+        .product-card {
+            transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -15px rgba(181, 18, 36, 0.35), 0 0 20px rgba(212, 175, 55, 0.15);
+            border-color: rgba(212, 175, 55, 0.45);
+        }
+
+        .cyber-grid {
+            background-size: 48px 48px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        }
+
+        input[type="range"] { accent-color: #D4AF37; }
+    </style>
+</head>
+<body class="bg-aj-black text-white font-sans antialiased selection:bg-aj-red selection:text-white">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-aj-black via-aj-red to-aj-black text-xs py-2 px-4 text-center border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-3 sm:gap-6">
+            <span class="font-medium tracking-wider uppercase text-white flex items-center gap-1.5">
+                <i data-lucide="zap" class="w-3.5 h-3.5 text-aj-gold"></i>
+                Free Express Delivery Across Pakistan on Orders Above <strong id="top-free-shipping" class="text-aj-gold">Rs. 5,000</strong>
+            </span>
+            <span class="hidden md:inline text-white/40">|</span>
+            <button onclick="openTrackModal()" class="underline decoration-aj-gold text-aj-gold hover:text-white transition font-medium flex items-center gap-1">
+                <i data-lucide="package-search" class="w-3.5 h-3.5"></i> Track Your Order
+            </button>
+        </div>
+    </div>
+
+    <!-- Sticky Glassmorphism Navigation Header -->
+    <header class="sticky top-0 z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                
+                <!-- AJ ACCERSSORES Hexagonal Emblem & Logo -->
+                <div class="flex items-center gap-3 cursor-pointer group shrink-0" onclick="navigateTo('home')">
+                    <div class="w-11 h-11 relative flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <svg viewBox="0 0 48 48" class="w-full h-full drop-shadow-[0_0_12px_rgba(212,175,55,0.45)]">
+                            <defs>
+                                <linearGradient id="ajHexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#E11D33"/>
+                                    <stop offset="100%" stop-color="#D4AF37"/>
+                                </linearGradient>
+                            </defs>
+                            <polygon points="24,2 44,13 44,35 24,46 4,35 4,13" fill="#0D0D0D" stroke="url(#ajHexGrad)" stroke-width="2.5"/>
+                        </svg>
+                        <span class="absolute font-display font-black text-sm tracking-tighter text-aj-gold">AJ</span>
+                    </div>
+                    <div>
+                        <span class="font-display font-extrabold text-base sm:text-lg tracking-wider text-white block leading-none">
+                            AJ <span class="gold-gradient-text">ACCERSSORES</span>
+                        </span>
+                        <span class="text-[10px] uppercase tracking-[0.25em] text-aj-muted block mt-0.5">Future Tech Luxury</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex items-center gap-1 xl:gap-2">
+                    <button onclick="navigateTo('home')" data-nav="home" class="nav-link px-3.5 py-2 rounded-lg text-sm font-medium text-white bg-white/10 transition hover:text-aj-gold">Home</button>
+                    <button onclick="navigateTo('shop')" data-nav="shop" class="nav-link px-3.5 py-2 rounded-lg text-sm font-medium text-aj-muted hover:text-white hover:bg-white/5 transition">Shop</button>
+                    <button onclick="scrollToWhyAJ()" class="px-3.5 py-2 rounded-lg text-sm font-medium text-aj-muted hover:text-white hover:bg-white/5 transition">Why AJ</button>
+                    <button onclick="openTrackModal()" class="px-3.5 py-2 rounded-lg text-sm font-medium text-aj-muted hover:text-white hover:bg-white/5 transition">Track Order</button>
+                    <button onclick="scrollToFooter()" class="px-3.5 py-2 rounded-lg text-sm font-medium text-aj-muted hover:text-white hover:bg-white/5 transition">Contact</button>
+                </nav>
+
+                <!-- Live Search Bar -->
+                <div class="hidden md:block relative flex-1 max-w-xs xl:max-w-sm">
+                    <div class="relative">
+                        <i data-lucide="search" class="w-4 h-4 text-aj-muted absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input 
+                            type="text" 
+                            id="global-search-input"
+                            placeholder="Search earbuds, chargers, cases..." 
+                            autocomplete="off"
+                            class="w-full bg-aj-card/90 border border-white/10 focus:border-aj-gold rounded-full pl-10 pr-4 py-2 text-sm text-white placeholder-aj-muted focus:outline-none transition"
+                        >
+                    </div>
+                    <div id="search-suggestions" class="hidden absolute left-0 right-0 mt-2 rounded-2xl glass-panel border border-aj-gold/30 shadow-2xl overflow-hidden z-50 max-h-96 overflow-y-auto"></div>
+                </div>
+
+                <!-- Right Actions: Account, Wishlist, Bag -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button onclick="toggleMobileSearch()" class="md:hidden p-2.5 rounded-xl bg-aj-card border border-white/10 text-white hover:border-aj-gold transition" aria-label="Search">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                    </button>
+
+                    <!-- Customer Account Status Button -->
+                    <div id="header-auth-container">
+                        <button onclick="openAuthModal('login', false)" class="px-3.5 py-2.5 rounded-xl bg-aj-card border border-aj-gold/40 hover:border-aj-gold text-xs font-bold text-aj-gold hover:bg-aj-gold/10 transition flex items-center gap-1.5">
+                            <i data-lucide="user" class="w-4 h-4"></i>
+                            <span class="hidden sm:inline">Sign In</span>
+                        </button>
+                    </div>
+
+                    <!-- Wishlist Button -->
+                    <button onclick="toggleDrawer('wishlist')" class="relative p-2.5 rounded-xl bg-aj-card border border-white/10 text-white hover:border-aj-gold hover:text-aj-gold transition" aria-label="Wishlist">
+                        <i data-lucide="heart" class="w-5 h-5"></i>
+                        <span id="wishlist-badge" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-aj-gold text-aj-black font-bold text-[11px] flex items-center justify-center shadow">0</span>
+                    </button>
+
+                    <!-- Bag / Cart Button -->
+                    <button onclick="toggleDrawer('cart')" class="relative p-2.5 rounded-xl bg-gradient-to-r from-aj-red to-red-900 border border-aj-redGlow/50 text-white hover:brightness-110 transition shadow-lg shadow-aj-red/25 flex items-center gap-2" aria-label="Bag">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        <span class="hidden sm:inline text-xs font-semibold">Bag</span>
+                        <span id="cart-badge" class="w-5 h-5 rounded-full bg-white text-aj-black font-extrabold text-[11px] flex items-center justify-center">0</span>
+                    </button>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl bg-aj-card border border-white/10 text-white hover:border-aj-gold transition" aria-label="Menu">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Collapsible Mobile Search -->
+            <div id="mobile-search-bar" class="hidden md:hidden pb-4">
+                <div class="relative">
+                    <i data-lucide="search" class="w-4 h-4 text-aj-muted absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                    <input type="text" id="mobile-search-input" placeholder="Search accessories..." class="w-full bg-aj-card border border-white/15 focus:border-aj-gold rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-aj-muted focus:outline-none">
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-white/10 bg-aj-dark px-4 py-4 space-y-2">
+            <button onclick="navigateTo('home'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-white hover:bg-white/5">Home</button>
+            <button onclick="navigateTo('shop'); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-white hover:bg-white/5">Shop Collection</button>
+            <button onclick="scrollToWhyAJ(); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-white hover:bg-white/5">Why AJ</button>
+            <button onclick="openTrackModal(); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-white hover:bg-white/5">Track Order</button>
+            <button onclick="openAccountOrAuth(); toggleMobileMenu()" class="block w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-aj-gold bg-aj-gold/10">My Account / Sign In</button>
+        </div>
+    </header>
+
+    <!-- ===================================================================== -->
+    <!-- MAIN SPA VIEWPORT                                                     -->
+    <!-- ===================================================================== -->
+    <main id="app-main" class="min-h-screen">
+
+        <!-- ================================================================= -->
+        <!-- VIEW 1: HOMEPAGE WITH 3D MOUSE-RESPONSIVE FOUNDER HERO            -->
+        <!-- ================================================================= -->
+        <section id="view-home" class="spa-view space-y-24 pb-16">
+            
+            <!-- Hero Section -->
+            <div id="hero-parallax-zone" class="relative overflow-hidden cyber-grid border-b border-white/10 pt-10 pb-20 lg:py-20">
+                <!-- Dynamic Cursor-Tracking Aura Light -->
+                <div id="hero-cursor-glow" class="pointer-events-none absolute w-[480px] h-[480px] rounded-full bg-gradient-to-tr from-aj-red/30 via-aj-gold/20 to-transparent blur-[110px] opacity-75 transition-transform duration-200 ease-out" style="top: 10%; right: 10%;"></div>
+
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                    
+                    <!-- Left Column: Brand Copy & CTAs -->
+                    <div class="lg:col-span-6 space-y-6 text-center lg:text-left z-10">
+                        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full glass-panel border border-aj-gold/30 text-xs font-medium text-aj-muted">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span>Store online • new drops weekly</span>
+                        </div>
+
+                        <h1 class="font-sans font-extrabold text-5xl sm:text-6xl xl:text-7xl tracking-tight leading-[1.03] text-white">
+                            Accessories <br>
+                            from <br>
+                            <span class="tomorrow-gradient-text">tomorrow.</span>
+                        </h1>
+
+                        <p class="text-base sm:text-lg text-aj-muted max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                            Earbuds, chargers, cases and stands picked for the way you live and work. Clean design, clever features, ready today.
+                        </p>
+
+                        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+                            <button onclick="navigateTo('shop')" class="px-7 py-3.5 rounded-xl bg-gradient-to-r from-aj-redGlow via-aj-red to-aj-gold text-white font-bold text-sm tracking-wide shadow-xl shadow-aj-red/30 hover:brightness-110 transition transform hover:-translate-y-0.5">
+                                Shop the collection
+                            </button>
+                            <button onclick="scrollToWhyAJ()" class="px-7 py-3.5 rounded-xl glass-panel border border-white/15 hover:border-aj-gold/60 text-white font-bold text-sm tracking-wide transition transform hover:-translate-y-0.5">
+                                Why AJ
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Interactive 3D Mouse-Responsive Founder Portrait Stage -->
+                    <div class="lg:col-span-6 hero-stage relative flex items-center justify-center py-6">
+                        <div class="relative w-full max-w-[440px] flex items-center justify-center">
+                            
+                            <!-- Glowing Red & Gold Backlight Aura behind Portrait -->
+                            <div id="portrait-backlight" class="absolute -inset-5 rounded-[2.5rem] bg-gradient-to-tr from-aj-red/55 via-aj-gold/40 to-aj-redGlow/45 blur-2xl opacity-80 transition-all duration-300"></div>
+
+                            <!-- 3D Tiltable Chamfered Founder Portrait Frame -->
+                            <div id="founder-card-3d" class="founder-card-3d founder-frame-glow relative w-[310px] sm:w-[350px] h-[400px] sm:h-[440px] bg-gradient-to-br from-aj-redGlow via-aj-gold to-aj-red p-[2px]">
+                                <div class="relative w-full h-full bg-aj-card overflow-hidden" style="clip-path: polygon(21px 0%, 100% 0%, 100% calc(100% - 21px), calc(100% - 21px) 100%, 0% 100%, 0% 21px);">
+                                    
+                                    <!-- Specular Cursor Light Reflection Overlay -->
+                                    <div id="portrait-specular" class="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity duration-300" style="background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.3), rgba(225, 29, 51, 0.16) 45%, transparent 75%);"></div>
+
+                                    <!-- Founder Portrait Image (Loads from Supabase, local upload, or ./founder.jpg) -->
+                                    <img 
+                                        id="hero-founder-img"
+                                        src="./founder.jpg" 
+                                        alt="AJ ACCERSSORES Founder" 
+                                        onerror="handleFounderImageError(this)"
+                                        class="w-full h-full object-cover object-top transition-transform duration-500 scale-[1.02]"
+                                    >
+
+                                    <!-- Instant Local Photo Selector Overlay (When ./founder.jpg isn't present yet) -->
+                                    <div id="founder-placeholder-overlay" class="hidden absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-aj-card via-aj-dark to-aj-black z-10">
+                                        <div class="w-16 h-16 rounded-2xl bg-aj-red/20 border border-aj-gold/50 flex items-center justify-center text-aj-gold mb-3 shadow-lg shadow-aj-red/20">
+                                            <i data-lucide="camera" class="w-8 h-8"></i>
+                                        </div>
+                                        <p class="font-display font-bold text-sm text-white">AJ ACCERSSORES FOUNDER</p>
+                                        <p class="text-xs text-aj-muted mt-1.5 mb-4">Save your photo as <code class="text-aj-gold">founder.jpg</code> in this folder or select it directly below:</p>
+                                        <label class="cursor-pointer px-4 py-2 rounded-xl bg-gradient-to-r from-aj-red to-aj-gold text-white font-bold text-xs uppercase tracking-wider shadow-lg hover:brightness-110 transition">
+                                            Choose Your Photo
+                                            <input type="file" accept="image/*" onchange="handleLocalPortraitUpload(event)" class="hidden">
+                                        </label>
+                                    </div>
+
+                                    <!-- Subtle Bottom Gradient Vignette -->
+                                    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-aj-black/90 via-aj-black/35 to-transparent z-10"></div>
+
+                                    <!-- Quick Photo Change Trigger (Bottom-Left inside frame) -->
+                                    <label title="Change Founder Portrait" class="cursor-pointer absolute bottom-3 left-3 z-30 px-2.5 py-1.5 rounded-lg bg-aj-black/75 hover:bg-aj-black border border-white/15 hover:border-aj-gold/60 text-aj-muted hover:text-aj-gold text-[10px] font-semibold flex items-center gap-1.5 backdrop-blur-md transition">
+                                        <i data-lucide="image" class="w-3 h-3"></i>
+                                        <span>Update Photo</span>
+                                        <input type="file" accept="image/*" onchange="handleLocalPortraitUpload(event)" class="hidden">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Dual Glowing Cosmic Red & Gold Orbital Rings SVG -->
+                            <svg viewBox="0 0 460 280" class="pointer-events-none absolute inset-x-[-14px] top-1/2 -translate-y-1/2 w-[calc(100%+28px)] z-20 animate-arc-glow overflow-visible">
+                                <defs>
+                                    <linearGradient id="orbitalArcGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#FF2E43" stop-opacity="0.95"/>
+                                        <stop offset="50%" stop-color="#D4AF37" stop-opacity="0.9"/>
+                                        <stop offset="100%" stop-color="#FF2E43" stop-opacity="0.95"/>
+                                    </linearGradient>
+                                    <linearGradient id="orbitalArcGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#F3D066" stop-opacity="0.85"/>
+                                        <stop offset="50%" stop-color="#B51224" stop-opacity="0.65"/>
+                                        <stop offset="100%" stop-color="#D4AF37" stop-opacity="0.85"/>
+                                    </linearGradient>
+                                </defs>
+                                <ellipse cx="230" cy="145" rx="220" ry="68" transform="rotate(-14 230 145)" fill="none" stroke="url(#orbitalArcGrad1)" stroke-width="1.6" stroke-dasharray="360 120"/>
+                                <ellipse cx="230" cy="145" rx="205" ry="56" transform="rotate(11 230 145)" fill="none" stroke="url(#orbitalArcGrad2)" stroke-width="1.2" stroke-dasharray="280 140"/>
+                                <circle cx="432" cy="95" r="3.5" fill="#F3D066"/>
+                                <circle cx="32" cy="188" r="3" fill="#FF2E43"/>
+                                <circle cx="395" cy="182" r="2" fill="#D4AF37"/>
+                            </svg>
+
+                            <!-- Floating Parallax Spec Card 1: Top-Left ("Fast charge — 30W adapters") -->
+                            <div data-depth="38" class="parallax-badge absolute top-2 -left-2 sm:-left-6 z-30 glass-panel border border-white/15 hover:border-aj-gold/60 rounded-2xl px-4 py-3 shadow-2xl animate-float-slow">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-lg bg-aj-red/25 border border-aj-redGlow/40 flex items-center justify-center text-aj-gold">
+                                        <i data-lucide="zap" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs sm:text-sm font-bold text-white leading-tight">Fast charge</div>
+                                        <div class="text-[11px] text-aj-muted">30W adapters</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Floating Parallax Spec Card 2: Bottom-Right ("Wireless audio — Calls and music") -->
+                            <div data-depth="48" class="parallax-badge absolute bottom-4 -right-2 sm:-right-6 z-30 glass-panel border border-white/15 hover:border-aj-gold/60 rounded-2xl px-4 py-3 shadow-2xl animate-float-reverse">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-lg bg-aj-gold/20 border border-aj-gold/40 flex items-center justify-center text-aj-gold">
+                                        <i data-lucide="headphones" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs sm:text-sm font-bold text-white leading-tight">Wireless audio</div>
+                                        <div class="text-[11px] text-aj-muted">Calls and music</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Featured Audionic Tech Showcase (Right Below Hero, Matching Visual Layout) -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-[0.25em] text-aj-redGlow">Official Pakistan Lineup</span>
+                        <h2 class="font-sans font-extrabold text-2xl sm:text-3xl text-white mt-1">
+                            Featured <span class="tomorrow-gradient-text">Audionic Tech</span>
+                        </h2>
+                    </div>
+                    <button onclick="navigateTo('shop')" class="text-xs font-bold uppercase tracking-wider text-aj-gold hover:text-white flex items-center gap-1 transition">
+                        Explore Full Audionic Catalog <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div id="home-featured-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Populated with Audionic products & synced live with Supabase -->
+                </div>
+            </div>
+
+            <!-- Featured Categories Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-[0.25em] text-aj-gold">Curated Hardware</span>
+                        <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mt-1">SHOP BY CATEGORY</h2>
+                    </div>
+                    <button onclick="navigateTo('shop')" class="text-xs font-bold uppercase tracking-wider text-aj-gold hover:text-white flex items-center gap-1 transition">
+                        View All Categories <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div id="home-categories-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"></div>
+            </div>
+
+            <!-- Featured Live Products From Supabase -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-[0.25em] text-aj-redGlow">Live Inventory</span>
+                        <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mt-1">FEATURED DROPS</h2>
+                    </div>
+                    <button onclick="navigateTo('shop')" class="text-xs font-bold uppercase tracking-wider text-aj-gold hover:text-white flex items-center gap-1 transition">
+                        View All Products <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div id="home-featured-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Populated live from Supabase -->
+                </div>
+            </div>
+
+            <!-- Why Choose AJ ACCERSSORES -->
+            <div id="why-aj-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 pt-4">
+                <div class="text-center max-w-2xl mx-auto space-y-2">
+                    <span class="text-xs font-bold uppercase tracking-[0.25em] text-aj-gold">The AJ Standard</span>
+                    <h2 class="font-display font-bold text-2xl sm:text-3xl text-white">WHY CHOOSE AJ ACCERSSORES</h2>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="glass-panel rounded-3xl p-6 border border-white/10 space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-aj-red/20 border border-aj-gold/40 flex items-center justify-center text-aj-gold">
+                            <i data-lucide="shield-check" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-base text-white">Verified Quality</h3>
+                        <p class="text-xs text-aj-muted leading-relaxed">Every charger, earbud, and MagSafe accessory undergoes strict durability & safety testing.</p>
+                    </div>
+                    <div class="glass-panel rounded-3xl p-6 border border-white/10 space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-aj-red/20 border border-aj-gold/40 flex items-center justify-center text-aj-gold">
+                            <i data-lucide="truck" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-base text-white">Nationwide Dispatch</h3>
+                        <p class="text-xs text-aj-muted leading-relaxed">Fast, tracked courier delivery across Lahore, Karachi, Islamabad, Rawalpindi & all of Pakistan.</p>
+                    </div>
+                    <div class="glass-panel rounded-3xl p-6 border border-white/10 space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-aj-red/20 border border-aj-gold/40 flex items-center justify-center text-aj-gold">
+                            <i data-lucide="lock" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-base text-white">Secure Checkout</h3>
+                        <p class="text-xs text-aj-muted leading-relaxed">Google-authenticated customer accounts with Cash on Delivery, Bank Transfer & Online Payment.</p>
+                    </div>
+                    <div class="glass-panel rounded-3xl p-6 border border-white/10 space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-aj-red/20 border border-aj-gold/40 flex items-center justify-center text-aj-gold">
+                            <i data-lucide="headphones" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="font-display font-bold text-base text-white">Direct Support</h3>
+                        <p class="text-xs text-aj-muted leading-relaxed">Instant WhatsApp order assistance and real-time automated parcel tracking.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 2: FULL SHOP CATALOG                                         -->
+        <!-- ================================================================= -->
+        <section id="view-shop" class="spa-view hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-[0.25em] text-aj-gold">Complete Armory</span>
+                    <h1 class="font-display font-bold text-2xl sm:text-3xl text-white mt-1">EXPLORE ALL ACCESSORIES</h1>
+                </div>
+                <div class="flex items-center gap-3 glass-panel px-4 py-2.5 rounded-2xl border border-white/10">
+                    <label for="price-range-slider" class="text-xs text-aj-muted whitespace-nowrap">Max Price:</label>
+                    <input type="range" id="price-range-slider" min="500" max="50000" step="500" value="50000" oninput="handlePriceFilterChange(this.value)" class="w-32 sm:w-44">
+                    <span id="price-range-label" class="font-display font-bold text-xs text-aj-gold w-24 text-right">Rs. 50,000</span>
+                </div>
+            </div>
+
+            <div id="shop-category-filters" class="flex flex-wrap gap-2"></div>
+            <div id="shop-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </section>
+
+        <!-- ================================================================= -->
+        <!-- VIEW 3: HIDDEN OWNER-ONLY ADMIN CONTROL CENTER                    -->
+        <!-- ================================================================= -->
+        <section id="view-admin" class="spa-view hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            
+            <!-- Owner Role Verification Gate -->
+            <div id="admin-login-gate" class="max-w-md mx-auto my-12 glass-panel red-gold-border rounded-3xl p-8 text-center space-y-6">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-aj-red to-black border border-aj-gold/50 mx-auto flex items-center justify-center text-aj-gold shadow-xl">
+                    <i data-lucide="shield-alert" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.25em] text-aj-redGlow">Restricted Owner Zone</span>
+                    <h2 class="font-display font-bold text-2xl text-white mt-1">OWNER VERIFICATION</h2>
+                    <p class="text-xs text-aj-muted mt-2">Only the verified store owner account can access the Admin Control Center.</p>
+                </div>
+
+                <div id="admin-gate-status" class="text-xs text-aj-gold bg-aj-gold/10 border border-aj-gold/30 rounded-xl p-3">
+                    Sign in with your authorized Owner Google Account or Email & Password below.
+                </div>
+
+                <div class="space-y-3">
+                    <button onclick="signInWithGoogle(true)" class="w-full py-3.5 rounded-xl bg-white hover:bg-gray-100 text-gray-900 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-lg">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24Z"/><path fill="#FBBC05" d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14Z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96Z"/></svg>
+                        Continue with Owner Google Account
+                    </button>
+
+                    <form onsubmit="handleOwnerEmailLogin(event)" class="space-y-3 pt-2 border-t border-white/10 text-left">
+                        <div>
+                            <label class="block text-xs text-aj-muted mb-1">Owner Email</label>
+                            <input type="email" id="owner-login-email" value="00shadowgarden009@gmail.com" required placeholder="00shadowgarden009@gmail.com" class="w-full bg-aj-black border border-white/20 focus:border-aj-gold rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-aj-muted mb-1">Password</label>
+                            <input type="password" id="owner-login-password" required placeholder="••••••••" class="w-full bg-aj-black border border-white/20 focus:border-aj-gold rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none">
+                        </div>
+                        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-aj-red to-red-800 hover:brightness-110 text-white font-bold uppercase tracking-wider text-xs transition">
+                            Verify Owner Credentials
+                        </button>
+                    </form>
+
+                    <button onclick="openSupabaseConfigModal()" class="w-full py-2 text-[11px] text-aj-muted hover:text-aj-gold underline">
+                        Configure Supabase URL & Anon Key
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard Content (Unlocked Only for Verified Owner) -->
+            <div id="admin-dashboard-content" class="hidden space-y-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span class="text-xs font-bold tracking-[0.25em] uppercase text-aj-gold">Supabase Live Production Mode</span>
+                        </div>
+                        <h1 class="font-display font-bold text-2xl sm:text-3xl text-white mt-1">AJ ACCERSSORES COMMAND CENTER</h1>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <button onclick="seedAudionicProductsToSupabase()" class="px-4 py-2.5 rounded-xl bg-aj-red hover:bg-aj-redGlow text-white font-bold text-xs uppercase tracking-wider transition flex items-center gap-1.5 shadow-lg shadow-aj-red/25">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i> Sync Audionic Catalog to DB
+                        </button>
+                        <button onclick="copySupabaseSQLSchema()" class="px-4 py-2.5 rounded-xl bg-aj-gold text-aj-black font-bold text-xs uppercase tracking-wider hover:brightness-110 transition flex items-center gap-1.5">
+                            <i data-lucide="database" class="w-4 h-4"></i> Copy Supabase SQL Schema
+                        </button>
+                        <button onclick="openSupabaseConfigModal()" class="px-4 py-2.5 rounded-xl bg-aj-card border border-white/15 hover:border-aj-gold text-xs font-bold uppercase text-white transition">
+                            API Keys
+                        </button>
+                        <button onclick="navigateTo('home')" class="px-4 py-2.5 rounded-xl bg-aj-card border border-white/15 hover:border-aj-red text-xs font-bold uppercase text-aj-muted hover:text-white transition">
+                            Exit Admin
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Real Revenue & Operations KPIs -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div class="glass-panel rounded-2xl p-5 border border-white/10">
+                        <div class="flex items-center justify-between text-aj-muted text-xs uppercase font-bold">
+                            <span>Verified Revenue</span>
+                            <i data-lucide="banknote" class="w-5 h-5 text-aj-gold"></i>
+                        </div>
+                        <div id="kpi-revenue" class="font-display font-bold text-2xl text-white mt-2">Rs. 0</div>
+                        <div class="text-xs text-emerald-400 mt-1">Live from Supabase orders</div>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-5 border border-white/10">
+                        <div class="flex items-center justify-between text-aj-muted text-xs uppercase font-bold">
+                            <span>Total Orders</span>
+                            <i data-lucide="shopping-cart" class="w-5 h-5 text-aj-redGlow"></i>
+                        </div>
+                        <div id="kpi-orders" class="font-display font-bold text-2xl text-white mt-2">0</div>
+                        <div class="text-xs text-aj-muted mt-1">Customer orders in DB</div>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-5 border border-white/10">
+                        <div class="flex items-center justify-between text-aj-muted text-xs uppercase font-bold">
+                            <span>Live Products</span>
+                            <i data-lucide="package" class="w-5 h-5 text-aj-gold"></i>
+                        </div>
+                        <div id="kpi-products" class="font-display font-bold text-2xl text-white mt-2">0</div>
+                        <div class="text-xs text-aj-muted mt-1">Active catalog SKUs</div>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-5 border border-white/10">
+                        <div class="flex items-center justify-between text-aj-muted text-xs uppercase font-bold">
+                            <span>Low Stock Alerts</span>
+                            <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <div id="kpi-low-stock" class="font-display font-bold text-2xl text-amber-400 mt-2">0</div>
+                        <div class="text-xs text-aj-muted mt-1">Items with ≤ 5 units left</div>
+                    </div>
+                </div>
+
+                <!-- Admin Navigation Tabs -->
+                <div class="flex flex-wrap gap-2 border-b border-white/10 pb-4">
+                    <button onclick="switchAdminTab('products')" id="admin-tab-btn-products" class="px-5 py-2.5 rounded-xl bg-aj-red text-white text-sm font-bold transition">Product & Inventory</button>
+                    <button onclick="switchAdminTab('orders')" id="admin-tab-btn-orders" class="px-5 py-2.5 rounded-xl bg-aj-card text-aj-muted hover:text-white text-sm font-bold transition">Orders & Payment Verification</button>
+                    <button onclick="switchAdminTab('settings')" id="admin-tab-btn-settings" class="px-5 py-2.5 rounded-xl bg-aj-card text-aj-muted hover:text-white text-sm font-bold transition">Store, Portrait & Payment Settings</button>
+                </div>
+
+                <!-- Tab 1: Product & Inventory Manager -->
+                <div id="admin-tab-products" class="space-y-8">
+                    <div class="glass-panel rounded-2xl p-6 border border-aj-gold/25">
+                        <h3 class="font-display font-bold text-lg text-white mb-4 flex items-center gap-2">
+                            <i data-lucide="plus-circle" class="w-5 h-5 text-aj-gold"></i> Publish New Product to Supabase
+                        </h3>
+                        <form onsubmit="handleAdminAddProduct(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs text-aj-muted mb-1">Product Name *</label>
+                                <input type="text" id="new-prod-name" required placeholder="e.g., AJ Phantom ANC Pro" class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-aj-muted mb-1">Category *</label>
+                                <select id="new-prod-category" class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                                    <option value="Wireless Earbuds">Wireless Earbuds</option>
+                                    <option value="Headphones">Headphones</option>
+                                    <option value="Mobile Covers">Mobile Covers</option>
+                                    <option value="Fast Chargers">Fast Chargers</option>
+                                    <option value="Power Banks">Power Banks</option>
+                                    <option value="Smart Watches">Smart Watches</option>
+                                    <option value="Screen Protectors">Screen Protectors</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-aj-muted mb-1">Sale Price (PKR) *</label>
+                                <input type="number" id="new-prod-price" required min="50" placeholder="5499" class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-aj-muted mb-1">Original Price (PKR) *</label>
+                                <input type="number" id="new-prod-orig-price" required min="50" placeholder="7999" class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-aj-muted mb-1">Stock Quantity *</label>
+                                <input type="number" id="new-prod-stock" required min="0" value="15" class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-aj-muted mb-1">Product Image URL *</label>
+                                <input type="url" id="new-prod-image" required placeholder="https://..." class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                            </div>
+                            <div class="sm:col-span-2 lg:col-span-3">
+                                <label class="block text-xs text-aj-muted mb-1">Technical Specs (Comma-separated)</label>
+                                <input type="text" id="new-prod-specs" placeholder="48dB Hybrid ANC, Bluetooth 5.4, 40H Battery, IPX5" class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                            </div>
+                            <div class="sm:col-span-2 lg:col-span-3">
+                                <button type="submit" class="px-6 py-3 rounded-xl bg-gradient-to-r from-aj-red to-red-800 hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider transition">
+                                    Save Product to Database
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl border border-white/10 overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-aj-black border-b border-white/10 text-aj-muted uppercase">
+                                <tr>
+                                    <th class="px-5 py-3.5">Product</th>
+                                    <th class="px-5 py-3.5">Category</th>
+                                    <th class="px-5 py-3.5">Price (PKR)</th>
+                                    <th class="px-5 py-3.5">Stock</th>
+                                    <th class="px-5 py-3.5 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-products-tbody" class="divide-y divide-white/10"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Orders & Payment Verification Manager -->
+                <div id="admin-tab-orders" class="hidden space-y-6">
+                    <div class="glass-panel rounded-2xl border border-white/10 overflow-hidden">
+                        <div class="p-5 border-b border-white/10">
+                            <h3 class="font-bold text-white">Customer Orders & Payment Verification</h3>
+                            <p class="text-xs text-aj-muted">Verify incoming Bank Transfers / Online Gateway references and monitor automated courier stages.</p>
+                        </div>
+                        <div id="admin-orders-list" class="divide-y divide-white/10"></div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Store, Founder Portrait & Payment Gateway Settings -->
+                <div id="admin-tab-settings" class="hidden">
+                    <div class="glass-panel rounded-2xl p-6 border border-white/10 max-w-2xl space-y-5">
+                        <h3 class="font-display font-bold text-lg text-white">Store, Founder Portrait & Payment Configuration</h3>
+                        <form onsubmit="handleAdminSaveSettings(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs text-aj-muted mb-1">Founder Hero Portrait Image URL (or ./founder.jpg)</label>
+                                <input type="text" id="setting-founder-portrait" placeholder="./founder.jpg or https://..." class="w-full bg-aj-black border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs text-aj-muted mb-1">Owner Authorized Email *</label>
+                                    <input type="email" id="setting-owner-email" value="00shadowgarden009@gmail.com" required class="w-full bg-aj-black border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-aj-muted mb-1">Official WhatsApp Number (e.g., 923001234567)</label>
+                                    <input type="text" id="setting-whatsapp" value="923199061682" placeholder="923XXXXXXXXX" class="w-full bg-aj-black border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs text-aj-muted mb-1">Delivery Fee (PKR)</label>
+                                    <input type="number" id="setting-delivery-fee" min="0" required class="w-full bg-aj-black border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-aj-muted mb-1">Free Delivery Above (PKR)</label>
+                                    <input type="number" id="setting-free-shipping" min="0" required class="w-full bg-aj-black border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-aj-muted mb-1">Bank Transfer / Raast IBAN Details (Shown at Checkout)</label>
+                                <textarea id="setting-bank-details" rows="2" placeholder="Bank Name, Account Title, IBAN / Raast ID..." class="w-full bg-aj-black border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs text-aj-muted mb-1">Online Payment Checkout Link (Stripe / Safepay / PayFast URL)</label>
+                                <input type="url" id="setting-online-payment-url" placeholder="https://checkout.stripe.com/... or https://getsafepay.com/..." class="w-full bg-aj-black border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                            </div>
+                            <button type="submit" class="px-6 py-3 rounded-xl bg-aj-red hover:bg-aj-redGlow text-white font-bold text-sm uppercase tracking-wider transition">
+                                Save Settings to Supabase
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- PREMIUM FOOTER                                                        -->
+    <!-- ===================================================================== -->
+    <footer id="site-footer" class="bg-aj-dark border-t border-white/10 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div class="space-y-4">
+                    <span class="font-display font-extrabold text-lg tracking-wider text-white block">
+                        AJ <span class="gold-gradient-text">ACCERSSORES</span>
+                    </span>
+                    <p class="text-sm text-aj-muted leading-relaxed">
+                        Pakistan's futuristic destination for luxury mobile accessories, ultra-fast GaN power solutions, and precision wireless audio.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="font-display font-bold text-sm uppercase tracking-wider text-aj-gold mb-4">Navigation</h4>
+                    <ul class="space-y-2.5 text-sm text-aj-muted">
+                        <li><button onclick="navigateTo('home')" class="hover:text-white transition">Home Showroom</button></li>
+                        <li><button onclick="navigateTo('shop')" class="hover:text-white transition">Shop Collection</button></li>
+                        <li><button onclick="openTrackModal()" class="hover:text-white transition">Live Order Tracking</button></li>
+                        <li><button onclick="openAccountOrAuth()" class="hover:text-white transition">Customer Account</button></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-display font-bold text-sm uppercase tracking-wider text-aj-gold mb-4">Categories</h4>
+                    <ul class="space-y-2.5 text-sm text-aj-muted">
+                        <li><button onclick="selectCategoryAndShop('Wireless Earbuds')" class="hover:text-white transition">Wireless Earbuds</button></li>
+                        <li><button onclick="selectCategoryAndShop('Fast Chargers')" class="hover:text-white transition">Fast Chargers</button></li>
+                        <li><button onclick="selectCategoryAndShop('Mobile Covers')" class="hover:text-white transition">Mobile Covers</button></li>
+                        <li><button onclick="selectCategoryAndShop('Smart Watches')" class="hover:text-white transition">Smart Watches</button></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="font-display font-bold text-sm uppercase tracking-wider text-aj-gold">Direct Support</h4>
+                    <p class="text-sm text-aj-muted">Need help choosing the right gear or checking an order?</p>
+                    <div class="space-y-2 text-sm text-aj-muted">
+                        <a href="mailto:00shadowgarden009@gmail.com" class="flex items-center gap-2 hover:text-aj-gold transition">
+                            <i data-lucide="mail" class="w-4 h-4 text-aj-gold"></i> 00shadowgarden009@gmail.com
+                        </a>
+                        <a href="tel:+923199061682" class="flex items-center gap-2 hover:text-aj-gold transition">
+                            <i data-lucide="phone" class="w-4 h-4 text-aj-gold"></i> 03199061682
+                        </a>
+                    </div>
+                    <button onclick="openGeneralWhatsApp()" class="px-4 py-2.5 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold uppercase tracking-wider hover:bg-emerald-600/30 transition flex items-center gap-2">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i> Chat on WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-aj-muted">
+                <p>© <span id="footer-year"></span> AJ ACCERSSORES Pakistan. All Rights Reserved.</p>
+                <div class="flex items-center gap-4">
+                    <span>Currency: PKR (Rs.)</span>
+                    <span>•</span>
+                    <button onclick="openOwnerPortal()" class="text-white/25 hover:text-aj-gold transition">Owner Portal</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <button onclick="openGeneralWhatsApp()" aria-label="Chat on WhatsApp" class="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white shadow-2xl shadow-emerald-900/50 flex items-center justify-center transition-transform hover:scale-110 border-2 border-white/20">
+        <i data-lucide="message-circle" class="w-7 h-7"></i>
+    </button>
+
+    <!-- ===================================================================== -->
+    <!-- SLIDE-OVER BAG / CART DRAWER                                          -->
+    <!-- ===================================================================== -->
+    <div id="drawer-cart" class="fixed inset-0 z-50 hidden">
+        <div onclick="toggleDrawer('cart')" class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-lg bg-aj-dark border-l border-aj-gold/30 shadow-2xl flex flex-col">
+            <div class="p-5 border-b border-white/10 flex items-center justify-between bg-aj-black">
+                <div class="flex items-center gap-2.5">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-aj-gold"></i>
+                    <h3 class="font-display font-bold text-lg text-white">YOUR TECH BAG</h3>
+                </div>
+                <button onclick="toggleDrawer('cart')" class="p-2 rounded-lg hover:bg-white/10 text-aj-muted hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-5 space-y-6">
+                <div id="cart-items-container" class="space-y-3"></div>
+
+                <!-- Totals Breakdown -->
+                <div id="cart-summary-box" class="glass-panel rounded-2xl p-4 border border-aj-gold/25 space-y-2.5 text-sm">
+                    <div class="flex justify-between text-aj-muted">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal" class="text-white font-semibold">Rs. 0</span>
+                    </div>
+                    <div class="flex justify-between text-aj-muted">
+                        <span>Delivery Charges</span>
+                        <span id="cart-delivery" class="text-white font-semibold">Rs. 250</span>
+                    </div>
+                    <div class="border-t border-white/10 pt-2.5 flex justify-between text-base font-bold">
+                        <span class="text-white">Grand Total</span>
+                        <span id="cart-grand-total" class="font-display text-aj-gold text-lg">Rs. 0</span>
+                    </div>
+                </div>
+
+                <!-- Proceed to Checkout CTA (Checks Real Supabase Auth) -->
+                <div id="cart-proceed-box" class="space-y-2.5">
+                    <button onclick="handleProceedToCheckout()" class="w-full py-4 rounded-xl bg-gradient-to-r from-aj-red to-red-800 hover:from-aj-redGlow hover:to-aj-red text-white font-bold text-sm uppercase tracking-wider shadow-lg shadow-aj-red/30 transition flex items-center justify-center gap-2">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i> Proceed to Secure Checkout
+                    </button>
+                    <p id="cart-auth-hint" class="text-[11px] text-center text-aj-muted">
+                        Google or Email Sign-In required at checkout to protect your order.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- REAL CHECKOUT MODAL (ONLY ACCESSIBLE WHEN SIGNED IN VIA SUPABASE)     -->
+    <!-- ===================================================================== -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closeCheckoutModal()" class="absolute inset-0 bg-black/85 backdrop-blur-md"></div>
+        <div class="relative w-full max-w-xl glass-panel red-gold-border rounded-3xl p-6 sm:p-8 space-y-5 z-10 max-h-[92vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-400" id="checkout-verified-user">Verified Customer</span>
+                    <h3 class="font-display font-bold text-xl text-white">COMPLETE YOUR ORDER</h3>
+                </div>
+                <button onclick="closeCheckoutModal()" class="p-2 rounded-lg hover:bg-white/10 text-aj-muted hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleSubmitRealOrder(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs text-aj-muted mb-1">Full Name *</label>
+                        <input type="text" id="chk-name" required placeholder="Recipient Full Name" class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-aj-muted mb-1">Phone Number *</label>
+                        <input type="tel" id="chk-phone" required placeholder="03XX-XXXXXXX" class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs text-aj-muted mb-1">City *</label>
+                        <input type="text" id="chk-city" required placeholder="Lahore / Karachi / Islamabad" class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-aj-muted mb-1">Payment Method *</label>
+                        <select id="chk-payment" onchange="togglePaymentMethodDetails(this.value)" class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                            <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+                            <option value="Bank Transfer">Bank Transfer / Raast</option>
+                            <option value="Online Card / Gateway">Online Payment Gateway</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Dynamic Bank Transfer Instructions -->
+                <div id="payment-bank-box" class="hidden glass-panel rounded-2xl p-4 border border-aj-gold/30 space-y-2.5 text-xs">
+                    <div class="font-bold text-aj-gold uppercase tracking-wider">Official Bank / Raast Transfer Details</div>
+                    <p id="checkout-bank-info" class="text-white whitespace-pre-line">Configure Bank IBAN in Owner Settings.</p>
+                    <div>
+                        <label class="block text-aj-muted mb-1">Transaction Reference / TID *</label>
+                        <input type="text" id="chk-bank-ref" placeholder="Enter your bank transfer reference ID" class="w-full bg-aj-black border border-white/20 rounded-xl px-3 py-2 text-white focus:border-aj-gold focus:outline-none">
+                    </div>
+                </div>
+
+                <!-- Dynamic Online Gateway Notice -->
+                <div id="payment-gateway-box" class="hidden glass-panel rounded-2xl p-4 border border-aj-red/40 space-y-2 text-xs">
+                    <div class="font-bold text-aj-gold uppercase tracking-wider">Online Gateway Checkout</div>
+                    <p class="text-aj-muted">Your order will be created with status <strong class="text-white">Pending Gateway Verification</strong> and you will be directed to our configured payment portal.</p>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-aj-muted mb-1">Complete Delivery Address *</label>
+                    <textarea id="chk-address" required rows="2" placeholder="House #, Street, Sector / Block, Landmark..." class="w-full bg-aj-black border border-white/15 rounded-xl px-3.5 py-2 text-sm text-white focus:border-aj-gold focus:outline-none"></textarea>
+                </div>
+
+                <div class="flex items-center justify-between pt-2 border-t border-white/10 text-sm">
+                    <span class="text-aj-muted">Total Amount Payable:</span>
+                    <span id="checkout-modal-total" class="font-display font-black text-xl text-aj-gold">Rs. 0</span>
+                </div>
+
+                <button type="submit" id="submit-order-btn" class="w-full py-4 rounded-xl bg-gradient-to-r from-aj-red to-red-800 hover:brightness-110 text-white font-bold text-sm uppercase tracking-wider shadow-lg transition">
+                    Place Official Order
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- REAL AUTH MODAL (GOOGLE OAUTH + EMAIL/PASSWORD)                       -->
+    <!-- ===================================================================== -->
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closeAuthModal()" class="absolute inset-0 bg-black/85 backdrop-blur-md"></div>
+        <div class="relative w-full max-w-md glass-panel red-gold-border rounded-3xl p-6 sm:p-8 space-y-6 z-10">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 p-2 rounded-lg hover:bg-white/10 text-aj-muted hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <div class="text-center space-y-1.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-aj-red to-black border border-aj-gold/50 mx-auto flex items-center justify-center text-aj-gold mb-2">
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                </div>
+                <h3 id="auth-modal-title" class="font-display font-bold text-xl text-white">SIGN IN TO COMPLETE ORDER</h3>
+                <p class="text-xs text-aj-muted">Continue with Google or your AJ ACCERSSORES account</p>
+            </div>
+
+            <!-- Real Google OAuth Sign-In Button -->
+            <button type="button" onclick="signInWithGoogle(false)" class="w-full py-3.5 rounded-xl bg-white hover:bg-gray-100 text-gray-900 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2.5 shadow-xl">
+                <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24Z"/><path fill="#FBBC05" d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14Z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96Z"/></svg>
+                Continue with Google
+            </button>
+
+            <div class="relative flex items-center justify-center">
+                <div class="border-t border-white/10 w-full"></div>
+                <span class="bg-aj-card px-3 text-[11px] text-aj-muted uppercase">or with email</span>
+                <div class="border-t border-white/10 w-full"></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 bg-aj-black p-1 rounded-xl border border-white/10">
+                <button type="button" onclick="switchAuthTab('login')" id="auth-tab-login" class="py-2 rounded-lg text-xs font-bold uppercase bg-aj-red text-white transition">Sign In</button>
+                <button type="button" onclick="switchAuthTab('signup')" id="auth-tab-signup" class="py-2 rounded-lg text-xs font-bold uppercase text-aj-muted hover:text-white transition">Create Account</button>
+            </div>
+
+            <!-- Email Login Form -->
+            <form id="customer-login-form" onsubmit="handleEmailLogin(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs text-aj-muted mb-1">Email Address *</label>
+                    <input type="email" id="login-email" required placeholder="you@gmail.com" class="w-full bg-aj-black border border-white/15 focus:border-aj-gold rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-aj-muted mb-1">Password *</label>
+                    <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-aj-black border border-white/15 focus:border-aj-gold rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none">
+                </div>
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-aj-red to-red-800 hover:brightness-110 text-white font-bold text-xs uppercase tracking-wider transition">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Email Sign Up Form -->
+            <form id="customer-signup-form" onsubmit="handleEmailSignup(event)" class="hidden space-y-3">
+                <div>
+                    <label class="block text-xs text-aj-muted mb-1">Full Name *</label>
+                    <input type="text" id="signup-name" required placeholder="Your Full Name" class="w-full bg-aj-black border border-white/15 focus:border-aj-gold rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs text-aj-muted mb-1">Email *</label>
+                        <input type="email" id="signup-email" required placeholder="you@gmail.com" class="w-full bg-aj-black border border-white/15 focus:border-aj-gold rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-aj-muted mb-1">Phone *</label>
+                        <input type="tel" id="signup-phone" required placeholder="03XX-XXXXXXX" class="w-full bg-aj-black border border-white/15 focus:border-aj-gold rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-aj-muted mb-1">Password *</label>
+                    <input type="password" id="signup-password" required minlength="6" placeholder="Min 6 characters" class="w-full bg-aj-black border border-white/15 focus:border-aj-gold rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none">
+                </div>
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-aj-gold text-aj-black font-bold text-xs uppercase tracking-wider hover:brightness-110 transition">
+                    Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- CUSTOMER PROFILE & REAL ORDERS MODAL                                  -->
+    <!-- ===================================================================== -->
+    <div id="customer-profile-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closeCustomerProfileModal()" class="absolute inset-0 bg-black/85 backdrop-blur-md"></div>
+        <div class="relative w-full max-w-2xl glass-panel red-gold-border rounded-3xl p-6 sm:p-8 space-y-6 z-10 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                <div class="flex items-center gap-3">
+                    <div id="profile-avatar-box" class="w-11 h-11 rounded-xl bg-aj-red/25 border border-aj-gold/40 flex items-center justify-center text-aj-gold font-display font-bold text-lg overflow-hidden">AJ</div>
+                    <div>
+                        <h3 id="profile-user-name" class="font-display font-bold text-lg text-white">Customer</h3>
+                        <p id="profile-user-email" class="text-xs text-aj-muted"></p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="handleSignOut()" class="px-3.5 py-2 rounded-xl bg-aj-red/20 hover:bg-aj-red text-aj-redGlow hover:text-white text-xs font-bold uppercase transition">Sign Out</button>
+                    <button onclick="closeCustomerProfileModal()" class="p-2 rounded-lg hover:bg-white/10 text-aj-muted hover:text-white">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <h4 class="font-display font-bold text-sm uppercase tracking-wider text-aj-gold">My Orders & Live Automated Tracking</h4>
+                <div id="profile-orders-list" class="space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- LIVE AUTOMATED ORDER TRACKING MODAL                                   -->
+    <!-- ===================================================================== -->
+    <div id="track-order-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closeTrackModal()" class="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+        <div class="relative w-full max-w-xl glass-panel red-gold-border rounded-3xl p-6 sm:p-8 space-y-5 z-10 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="font-display font-bold text-xl text-white flex items-center gap-2">
+                        <i data-lucide="radar" class="w-5 h-5 text-aj-gold"></i> LIVE AUTOMATED TRACKING
+                    </h3>
+                    <p class="text-xs text-aj-muted mt-0.5">Real-time parcel telemetry synced with Supabase</p>
+                </div>
+                <button onclick="closeTrackModal()" class="p-2 rounded-lg hover:bg-white/10 text-aj-muted hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form onsubmit="handleTrackOrderSearch(event)" class="flex gap-2">
+                <input type="text" id="track-order-input" required placeholder="Enter Order ID (e.g. AJ-849210)" class="flex-1 bg-aj-black border border-white/20 focus:border-aj-gold rounded-xl px-4 py-3 text-sm text-white uppercase focus:outline-none">
+                <button type="submit" class="px-5 py-3 rounded-xl bg-aj-red hover:bg-aj-redGlow text-white font-bold text-sm uppercase transition">Track</button>
+            </form>
+            <div id="track-order-result" class="hidden space-y-4 pt-3 border-t border-white/10"></div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- SUPABASE CONNECTION CONFIG MODAL (FOR OWNER SETUP)                    -->
+    <!-- ===================================================================== -->
+    <div id="supabase-config-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closeSupabaseConfigModal()" class="absolute inset-0 bg-black/85 backdrop-blur-md"></div>
+        <div class="relative w-full max-w-lg glass-panel red-gold-border rounded-3xl p-6 sm:p-8 space-y-5 z-10">
+            <div class="flex items-center justify-between">
+                <h3 class="font-display font-bold text-lg text-white">CONNECT SUPABASE PROJECT</h3>
+                <button onclick="closeSupabaseConfigModal()" class="p-2 rounded-lg hover:bg-white/10 text-aj-muted hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <p class="text-xs text-aj-muted">Paste your Supabase Project URL and Anon Public Key from <strong class="text-white">Project Settings → API</strong>, or hardcode them at the top of the script before deploying.</p>
+            <form onsubmit="saveSupabaseCredentials(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-aj-muted mb-1">Supabase Project URL *</label>
+                    <input type="url" id="cfg-supabase-url" required placeholder="https://xyzcompany.supabase.co" class="w-full bg-aj-black border border-white/20 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-aj-muted mb-1">Supabase Anon Public Key *</label>
+                    <input type="text" id="cfg-supabase-key" required placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." class="w-full bg-aj-black border border-white/20 rounded-xl px-3.5 py-2.5 text-sm text-white focus:border-aj-gold focus:outline-none">
+                </div>
+                <div class="flex gap-2.5">
+                    <button type="submit" class="flex-1 py-3 rounded-xl bg-aj-gold text-aj-black font-bold text-xs uppercase tracking-wider hover:brightness-110 transition">Save & Connect</button>
+                    <button type="button" onclick="copySupabaseSQLSchema()" class="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs uppercase transition">Copy SQL Schema</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Wishlist Drawer -->
+    <div id="drawer-wishlist" class="fixed inset-0 z-50 hidden">
+        <div onclick="toggleDrawer('wishlist')" class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-aj-dark border-l border-aj-gold/30 shadow-2xl flex flex-col">
+            <div class="p-5 border-b border-white/10 flex items-center justify-between bg-aj-black">
+                <div class="flex items-center gap-2.5">
+                    <i data-lucide="heart" class="w-5 h-5 text-aj-gold"></i>
+                    <h3 class="font-display font-bold text-lg text-white">SAVED WISHLIST</h3>
+                </div>
+                <button onclick="toggleDrawer('wishlist')" class="p-2 rounded-lg hover:bg-white/10 text-aj-muted hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div id="wishlist-items-container" class="flex-1 overflow-y-auto p-5 space-y-3"></div>
+        </div>
+    </div>
+
+    <!-- Product Quick View Modal -->
+    <div id="product-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closeProductModal()" class="absolute inset-0 bg-black/85 backdrop-blur-md"></div>
+        <div class="relative w-full max-w-3xl glass-panel red-gold-border rounded-3xl p-6 sm:p-8 z-10 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 p-2 rounded-lg hover:bg-white/10 text-aj-muted hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div id="product-modal-content" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+    </div>
+
+    <!-- Order Confirmation Success Modal -->
+    <div id="order-success-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div onclick="closeOrderSuccessModal()" class="absolute inset-0 bg-black/85 backdrop-blur-md"></div>
+        <div class="relative w-full max-w-md glass-panel red-gold-border rounded-3xl p-8 text-center space-y-5 z-10">
+            <div class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 mx-auto flex items-center justify-center text-emerald-400">
+                <i data-lucide="check-circle-2" class="w-9 h-9"></i>
+            </div>
+            <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-aj-gold">Order Recorded in Database</span>
+                <h3 class="font-display font-bold text-2xl text-white mt-1">ORDER <span id="success-order-id" class="text-aj-gold">#AJ-000000</span></h3>
+                <p class="text-xs text-aj-muted mt-2">Thank you for shopping with AJ ACCERSSORES. Your automated parcel tracking is now live.</p>
+            </div>
+            <div class="space-y-2.5 pt-2">
+                <a id="success-whatsapp-btn" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i> Send Order via WhatsApp
+                </a>
+                <button onclick="closeOrderSuccessModal(); openTrackModal(document.getElementById('success-order-id').textContent.replace('#',''));" class="w-full py-3 rounded-xl bg-aj-red hover:bg-aj-redGlow text-white font-bold text-xs uppercase tracking-wider transition">
+                    Track Automated Delivery
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed bottom-6 left-6 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- ===================================================================== -->
+    <!-- PRODUCTION SUPABASE CLIENT & APPLICATION CONTROLLER                   -->
+    <!-- ===================================================================== -->
+    <script>
+        // =====================================================================
+        // 1. SUPABASE PRODUCTION CONFIGURATION
+        // Replace these two constants with your real Supabase Project credentials
+        // (or configure them live in the Owner Portal -> API Keys)
+        // =====================================================================
+        const HARDCODED_SUPABASE_URL = '';
+        const HARDCODED_SUPABASE_ANON_KEY = '';
+
+        const SUPABASE_URL = HARDCODED_SUPABASE_URL || localStorage.getItem('aj_supabase_url') || '';
+        const SUPABASE_ANON_KEY = HARDCODED_SUPABASE_ANON_KEY || localStorage.getItem('aj_supabase_key') || '';
+
+        let supabaseClient = null;
+        if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+
+        const CATEGORIES = [
+            { name: 'Wireless Earbuds', icon: 'headphones', desc: 'Audionic ANC & Low-Latency Audio' },
+            { name: 'Headphones', icon: 'headset', desc: 'Audionic Hammer & Studio Over-Ear' },
+            { name: 'Speakers', icon: 'speaker', desc: 'Audionic Trance Portable Bass Systems' },
+            { name: 'Mobile Covers', icon: 'smartphone', desc: 'Aramid Carbon & MagSafe Armor' },
+            { name: 'Fast Chargers', icon: 'zap', desc: '30W–100W GaN Turbo Adapters' },
+            { name: 'Power Banks', icon: 'battery-charging', desc: 'Magnetic Wireless & PD Packs' },
+            { name: 'Smart Watches', icon: 'watch', desc: 'AMOLED Rugged & Luxury Series' },
+            { name: 'Screen Protectors', icon: 'shield', desc: 'Sapphire Edge-to-Edge Glass' }
+        ];
+
+        // Official Audionic Pakistan Tech Catalog (Pre-loaded immediately & ready to sync to Supabase)
+        const AUDIONIC_DEFAULT_CATALOG = [
+            {
+                id: 'audionic-airbud-595-flip',
+                name: 'Audionic Airbud 595 Flip',
+                category: 'Wireless Earbuds',
+                price: 3999,
+                original_price: 5999,
+                stock: 25,
+                image_url: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?auto=format&fit=crop&w=800&q=85',
+                specs: ['40 Hrs Playtime', 'Quad Mic ENC', '13mm Dynamic Drivers', 'Bluetooth 5.3 Low Latency']
+            },
+            {
+                id: 'audionic-trance-airbud-830',
+                name: 'Audionic Trance Airbud 830',
+                category: 'Wireless Earbuds',
+                price: 5999,
+                original_price: 8499,
+                stock: 18,
+                image_url: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=85',
+                specs: ['Hybrid ANC + Quad Mic ENC', '55 Hrs Total Playtime', 'Transparency Mode', 'Fast Type-C Charge']
+            },
+            {
+                id: 'audionic-hammer-110-ultra',
+                name: 'Audionic Hammer 110 Ultra',
+                category: 'Headphones',
+                price: 6749,
+                original_price: 8999,
+                stock: 14,
+                image_url: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&w=800&q=85',
+                specs: ['On-Ear RGB Gaming & Studio Headphone', 'Deep Bass 40mm Drivers', 'Foldable Cushioned Comfort', 'Wireless + AUX Dual Mode']
+            },
+            {
+                id: 'audionic-trance-move-speaker',
+                name: 'Audionic Trance Move Speaker',
+                category: 'Speakers',
+                price: 75999,
+                original_price: 89999,
+                stock: 6,
+                image_url: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=800&q=85',
+                specs: ['High-Output Bass Boosted Portable System', 'Dynamic RGB Light Show', 'Wireless Mic & TWS Pairing', 'Heavy-Duty Rechargeable Battery']
+            },
+            {
+                id: 'audionic-battlebuds-pro',
+                name: 'Audionic Battlebuds Gaming ANC',
+                category: 'Wireless Earbuds',
+                price: 4499,
+                original_price: 6499,
+                stock: 22,
+                image_url: 'https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?auto=format&fit=crop&w=800&q=85',
+                specs: ['45ms Ultra-Low Gaming Latency', 'Breathing Red/Gold LED Case', 'Quad Mic Clear Voice', 'IPX5 Sweat Resistant']
+            },
+            {
+                id: 'audionic-30w-gan-charger',
+                name: 'Audionic 30W GaN Fast Adapter',
+                category: 'Fast Chargers',
+                price: 2499,
+                original_price: 3499,
+                stock: 30,
+                image_url: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=800&q=85',
+                specs: ['30W USB-C PD + PPS Super Fast Charge', 'Thermal Shield Protection', 'Compact GaN III Architecture', 'Universal iPhone & Android']
+            },
+            {
+                id: 'audionic-magsafe-powerbank-10k',
+                name: 'Audionic MagCharge 10000mAh Pack',
+                category: 'Power Banks',
+                price: 5499,
+                original_price: 7200,
+                stock: 16,
+                image_url: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=800&q=85',
+                specs: ['15W Magnetic Wireless + 22.5W Wired PD', 'LED Digital Battery Display', 'Slim CNC Metallic Finish', 'Airline Safe']
+            },
+            {
+                id: 'audionic-apex-amoled-watch',
+                name: 'Audionic Apex Pro AMOLED Watch',
+                category: 'Smart Watches',
+                price: 8999,
+                original_price: 11999,
+                stock: 12,
+                image_url: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&w=800&q=85',
+                specs: ['1.96" Always-On AMOLED Display', 'Bluetooth Calling & AI Voice', '100+ Sports Modes & SpO2', '7-Day Battery Life']
+            }
+        ];
+
+        const TRACKING_STAGES = [
+            { key: 'Order Received', pct: 0.00, desc: 'Order verified and logged in AJ ACCERSSORES database.' },
+            { key: 'Order Confirmed', pct: 0.15, desc: 'Stock allocated and passed quality inspection.' },
+            { key: 'Processing & Packed', pct: 0.35, desc: 'Sealed in protective luxury packaging.' },
+            { key: 'Dispatched via Courier', pct: 0.60, desc: 'Handed over to courier hub for transit.' },
+            { key: 'Out for Delivery', pct: 0.85, desc: 'Courier rider is out for delivery in your city.' },
+            { key: 'Delivered', pct: 1.00, desc: 'Parcel delivered to recipient.' }
+        ];
+
+        let state = {
+            user: null,
+            profile: null,
+            products: [...AUDIONIC_DEFAULT_CATALOG],
+            orders: [],
+            cart: JSON.parse(localStorage.getItem('aj_cart')) || [],
+            wishlist: JSON.parse(localStorage.getItem('aj_wishlist')) || [],
+            settings: {
+                owner_email: '00shadowgarden009@gmail.com',
+                whatsapp_number: '923199061682',
+                delivery_fee: 250,
+                free_shipping_threshold: 5000,
+                bank_details: '',
+                online_payment_url: '',
+                founder_portrait_url: localStorage.getItem('aj_founder_portrait') || './founder.jpg'
+            },
+            activeCategory: 'All',
+            maxPriceFilter: 100000,
+            resumeCheckoutAfterAuth: false
+        };
+
+        function formatPKR(amount) {
+            return 'Rs. ' + Number(amount || 0).toLocaleString('en-PK');
+        }
+
+        // =====================================================================
+        // 2. INITIALIZATION & AUTH STATE LISTENER
+        // =====================================================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+            renderHomeCategories();
+            renderFeaturedProducts();
+            renderShopCategoryFilters();
+            renderShopProducts();
+            updateBadges();
+            initFounderHero3D();
+            initSearchListeners();
+            applyFounderPortrait(state.settings.founder_portrait_url);
+
+            // Secret Owner Keyboard Shortcut: Alt+A or Ctrl+Shift+A
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'a') || (e.altKey && e.key.toLowerCase() === 'a')) {
+                    e.preventDefault();
+                    openOwnerPortal();
+                }
+            });
+
+            if (supabaseClient) {
+                await initSupabaseSession();
+                await loadStoreSettingsFromSupabase();
+                await loadProductsFromSupabase();
+            }
+
+            lucide.createIcons();
+        });
+
+        async function initSupabaseSession() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            await handleAuthUserChange(session?.user || null);
+
+            supabaseClient.auth.onAuthStateChange(async (_event, newSession) => {
+                await handleAuthUserChange(newSession?.user || null);
+            });
+        }
+
+        async function handleAuthUserChange(user) {
+            state.user = user;
+            if (user) {
+                // Fetch or upsert profile row
+                const { data: prof } = await supabaseClient
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .maybeSingle();
+
+                if (!prof) {
+                    const newProf = {
+                        id: user.id,
+                        email: user.email,
+                        full_name: user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0],
+                        phone: user.user_metadata?.phone || '',
+                        avatar_url: user.user_metadata?.avatar_url || '',
+                        role: 'customer'
+                    };
+                    await supabaseClient.from('profiles').upsert(newProf);
+                    state.profile = newProf;
+                } else {
+                    state.profile = prof;
+                }
+
+                // Resume checkout automatically if user signed in during checkout
+                if (localStorage.getItem('aj_resume_checkout') === '1' || state.resumeCheckoutAfterAuth) {
+                    localStorage.removeItem('aj_resume_checkout');
+                    state.resumeCheckoutAfterAuth = false;
+                    closeAuthModal();
+                    openCheckoutModal();
+                }
+            } else {
+                state.profile = null;
+            }
+
+            renderAuthHeaderUI();
+            updateOwnerPortraitButtonVisibility();
+        }
+
+        function isCurrentUserOwner() {
+            if (!state.user) return false;
+            if (state.profile?.role === 'owner') return true;
+            if (state.settings.owner_email && state.user.email?.toLowerCase() === state.settings.owner_email.toLowerCase()) {
+                return true;
+            }
+            return false;
+        }
+
+        function updateOwnerPortraitButtonVisibility() {
+            const btn = document.getElementById('owner-set-portrait-btn');
+            if (!btn) return;
+            if (isCurrentUserOwner()) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        }
+
+        // =====================================================================
+        // 3. INTERACTIVE 3D MOUSE-RESPONSIVE GLOWING FOUNDER PORTRAIT
+        // =====================================================================
+        function initFounderHero3D() {
+            const zone = document.getElementById('hero-parallax-zone');
+            const card = document.getElementById('founder-card-3d');
+            const specular = document.getElementById('portrait-specular');
+            const cursorGlow = document.getElementById('hero-cursor-glow');
+            const backlight = document.getElementById('portrait-backlight');
+            if (!zone || !card) return;
+
+            zone.addEventListener('mousemove', (e) => {
+                const rect = zone.getBoundingClientRect();
+                const relX = (e.clientX - rect.left) / rect.width - 0.5;
+                const relY = (e.clientY - rect.top) / rect.height - 0.5;
+
+                // Move ambient red/gold cursor glow across hero background
+                if (cursorGlow) {
+                    cursorGlow.style.transform = `translate3d(${relX * 140}px, ${relY * 110}px, 0)`;
+                }
+
+                // 3D perspective tilt + subtle translation on Founder Portrait Card
+                const rotateY = relX * 16;
+                const rotateX = -relY * 14;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translate3d(${relX * 14}px, ${relY * 14}px, 12px)`;
+
+                // Intensify backlight glow on mouse hover
+                if (backlight) {
+                    backlight.style.opacity = '1';
+                    backlight.style.transform = `translate3d(${-relX * 18}px, ${-relY * 18}px, 0) scale(1.04)`;
+                }
+
+                // Position dynamic golden-red specular spotlight across portrait surface
+                if (specular) {
+                    const cardRect = card.getBoundingClientRect();
+                    const pctX = ((e.clientX - cardRect.left) / cardRect.width) * 100;
+                    const pctY = ((e.clientY - cardRect.top) / cardRect.height) * 100;
+                    specular.style.opacity = '1';
+                    specular.style.background = `radial-gradient(circle at ${pctX}% ${pctY}%, rgba(243, 208, 102, 0.34), rgba(225, 29, 51, 0.18) 45%, transparent 75%)`;
+                }
+
+                // Parallax movement on floating spec badges
+                zone.querySelectorAll('.parallax-badge').forEach(badge => {
+                    const depth = Number(badge.dataset.depth || 35);
+                    badge.style.transform = `translate3d(${relX * depth}px, ${relY * depth}px, 30px)`;
+                });
+            });
+
+            zone.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0)';
+                if (specular) specular.style.opacity = '0';
+                if (backlight) {
+                    backlight.style.opacity = '0.75';
+                    backlight.style.transform = 'translate3d(0, 0, 0) scale(1)';
+                }
+                zone.querySelectorAll('.parallax-badge').forEach(badge => {
+                    badge.style.transform = 'translate3d(0, 0, 0)';
+                });
+            });
+        }
+
+        function handleFounderImageError(img) {
+            img.classList.add('hidden');
+            const placeholder = document.getElementById('founder-placeholder-overlay');
+            if (placeholder) placeholder.classList.remove('hidden');
+        }
+
+        function applyFounderPortrait(url) {
+            const img = document.getElementById('hero-founder-img');
+            const placeholder = document.getElementById('founder-placeholder-overlay');
+            if (!img) return;
+            img.classList.remove('hidden');
+            if (placeholder) placeholder.classList.add('hidden');
+            img.src = url || localStorage.getItem('aj_founder_portrait') || './founder.jpg';
+        }
+
+        function handleLocalPortraitUpload(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const dataUrl = e.target.result;
+                try {
+                    localStorage.setItem('aj_founder_portrait', dataUrl);
+                } catch (_) {
+                    // Ignore storage quota warning for very large raw images
+                }
+                state.settings.founder_portrait_url = dataUrl;
+                applyFounderPortrait(dataUrl);
+                showToast('Founder portrait updated!');
+
+                if (supabaseClient && isCurrentUserOwner()) {
+                    await supabaseClient.from('store_settings').upsert({
+                        id: 1,
+                        founder_portrait_url: dataUrl
+                    });
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // =====================================================================
+        // 4. SUPABASE DATA FETCHING (SETTINGS, PRODUCTS, ORDERS)
+        // =====================================================================
+        async function loadStoreSettingsFromSupabase() {
+            if (!supabaseClient) return;
+            const { data } = await supabaseClient.from('store_settings').select('*').eq('id', 1).maybeSingle();
+            if (data) {
+                state.settings = { ...state.settings, ...data };
+                document.getElementById('top-free-shipping').textContent = formatPKR(state.settings.free_shipping_threshold);
+                if (data.founder_portrait_url && data.founder_portrait_url !== './founder.jpg') {
+                    applyFounderPortrait(data.founder_portrait_url);
+                }
+                updateOwnerPortraitButtonVisibility();
+            }
+        }
+
+        async function loadProductsFromSupabase() {
+            if (!supabaseClient) return;
+            const { data, error } = await supabaseClient
+                .from('products')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (!error && Array.isArray(data) && data.length > 0) {
+                state.products = data;
+                renderFeaturedProducts();
+                renderShopProducts();
+            }
+        }
+
+        async function seedAudionicProductsToSupabase() {
+            if (!ensureSupabaseConnected() || !isCurrentUserOwner()) return;
+            const rows = AUDIONIC_DEFAULT_CATALOG.map(({ id, ...rest }) => rest);
+            const { error } = await supabaseClient.from('products').insert(rows);
+            if (error) {
+                showToast(error.message, 'error');
+                return;
+            }
+            await renderAdminDashboard();
+            showToast('Audionic Pakistan product lineup synced to your Supabase database!');
+        }
+
+        // =====================================================================
+        // 4. SUPABASE DATA FETCHING (SETTINGS, PRODUCTS, ORDERS)
+        // =====================================================================
+        async function loadStoreSettingsFromSupabase() {
+            if (!supabaseClient) return;
+            const { data } = await supabaseClient.from('store_settings').select('*').eq('id', 1).maybeSingle();
+            if (data) {
+                state.settings = { ...state.settings, ...data };
+                document.getElementById('top-free-shipping').textContent = formatPKR(state.settings.free_shipping_threshold);
+                applyFounderPortrait(state.settings.founder_portrait_url);
+                updateOwnerPortraitButtonVisibility();
+            }
+        }
+
+        async function loadProductsFromSupabase() {
+            if (!supabaseClient) return;
+            const { data, error } = await supabaseClient
+                .from('products')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (!error && Array.isArray(data)) {
+                state.products = data;
+                renderFeaturedProducts();
+                renderShopProducts();
+            }
+        }
+
+        function renderProductsEmptyState() {
+            const msg = `
+                <div class="col-span-full glass-panel rounded-3xl p-10 text-center space-y-3 border border-white/10">
+                    <i data-lucide="package-open" class="w-12 h-12 text-aj-gold mx-auto opacity-80"></i>
+                    <h4 class="font-display font-bold text-base text-white">Store Catalog Ready for Launch</h4>
+                    <p class="text-xs text-aj-muted max-w-md mx-auto">
+                        ${supabaseClient 
+                            ? 'No products published yet. Store Owner can add live inventory in the Owner Admin Portal.' 
+                            : 'Connect your Supabase Project in the Owner Portal to load live products, Google Auth, and real checkout.'}
+                    </p>
+                </div>
+            `;
+            const fGrid = document.getElementById('home-featured-grid');
+            const sGrid = document.getElementById('shop-products-grid');
+            if (fGrid) fGrid.innerHTML = msg;
+            if (sGrid) sGrid.innerHTML = msg;
+            lucide.createIcons();
+        }
+
+        // =====================================================================
+        // 5. REAL GOOGLE OAUTH & EMAIL AUTHENTICATION
+        // =====================================================================
+        function ensureSupabaseConnected() {
+            if (!supabaseClient) {
+                showToast('Please connect your Supabase URL & Anon Key first.', 'error');
+                openSupabaseConfigModal();
+                return false;
+            }
+            return true;
+        }
+
+        async function signInWithGoogle(isOwnerFlow = false) {
+            if (!ensureSupabaseConnected()) return;
+            if (state.resumeCheckoutAfterAuth) {
+                localStorage.setItem('aj_resume_checkout', '1');
+            }
+            if (isOwnerFlow) {
+                localStorage.setItem('aj_open_owner_after_oauth', '1');
+            }
+
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin + window.location.pathname
+                }
+            });
+
+            if (error) {
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function handleEmailLogin(e) {
+            e.preventDefault();
+            if (!ensureSupabaseConnected()) return;
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                showToast(error.message, 'error');
+                return;
+            }
+            closeAuthModal();
+            showToast('Signed in successfully!');
+        }
+
+        async function handleEmailSignup(e) {
+            e.preventDefault();
+            if (!ensureSupabaseConnected()) return;
+            const full_name = document.getElementById('signup-name').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const phone = document.getElementById('signup-phone').value.trim();
+            const password = document.getElementById('signup-password').value;
+
+            const { data, error } = await supabaseClient.auth.signUp({
+                email,
+                password,
+                options: { data: { full_name, phone } }
+            });
+
+            if (error) {
+                showToast(error.message, 'error');
+                return;
+            }
+
+            if (data.session) {
+                closeAuthModal();
+                showToast(`Welcome to AJ ACCERSSORES, ${full_name}!`);
+            } else {
+                showToast('Verification email sent! Check your inbox to confirm your account.');
+            }
+        }
+
+        async function handleSignOut() {
+            if (supabaseClient) {
+                await supabaseClient.auth.signOut();
+            }
+            state.user = null;
+            state.profile = null;
+            renderAuthHeaderUI();
+            closeCustomerProfileModal();
+            showToast('Signed out.');
+        }
+
+        function renderAuthHeaderUI() {
+            const container = document.getElementById('header-auth-container');
+            if (!container) return;
+
+            if (state.user) {
+                const name = state.profile?.full_name || state.user.email.split('@')[0];
+                const avatar = state.profile?.avatar_url;
+                container.innerHTML = `
+                    <button onclick="openCustomerProfileModal()" class="px-3 py-2 rounded-xl bg-aj-gold/15 border border-aj-gold/50 hover:bg-aj-gold/25 text-xs font-bold text-aj-gold transition flex items-center gap-2">
+                        ${avatar 
+                            ? `<img src="${avatar}" alt="${name}" class="w-5 h-5 rounded-full object-cover">` 
+                            : `<i data-lucide="user-check" class="w-4 h-4"></i>`}
+                        <span class="hidden sm:inline max-w-[95px] truncate">${name.split(' ')[0]}</span>
+                    </button>
+                `;
+            } else {
+                container.innerHTML = `
+                    <button onclick="openAuthModal('login', false)" class="px-3.5 py-2.5 rounded-xl bg-aj-card border border-aj-gold/40 hover:border-aj-gold text-xs font-bold text-aj-gold hover:bg-aj-gold/10 transition flex items-center gap-1.5">
+                        <i data-lucide="user" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Sign In</span>
+                    </button>
+                `;
+            }
+            lucide.createIcons();
+        }
+
+        function openAuthModal(mode = 'login', resumeCheckout = false) {
+            state.resumeCheckoutAfterAuth = resumeCheckout;
+            document.getElementById('auth-modal-title').textContent = resumeCheckout
+                ? 'SIGN IN TO COMPLETE YOUR ORDER'
+                : 'SIGN IN TO AJ ACCERSSORES';
+            switchAuthTab(mode);
+            document.getElementById('auth-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function switchAuthTab(mode) {
+            const loginForm = document.getElementById('customer-login-form');
+            const signupForm = document.getElementById('customer-signup-form');
+            const loginTab = document.getElementById('auth-tab-login');
+            const signupTab = document.getElementById('auth-tab-signup');
+            if (mode === 'signup') {
+                loginForm.classList.add('hidden');
+                signupForm.classList.remove('hidden');
+                signupTab.className = 'py-2 rounded-lg text-xs font-bold uppercase bg-aj-gold text-aj-black transition';
+                loginTab.className = 'py-2 rounded-lg text-xs font-bold uppercase text-aj-muted hover:text-white transition';
+            } else {
+                signupForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+                loginTab.className = 'py-2 rounded-lg text-xs font-bold uppercase bg-aj-red text-white transition';
+                signupTab.className = 'py-2 rounded-lg text-xs font-bold uppercase text-aj-muted hover:text-white transition';
+            }
+        }
+
+        // =====================================================================
+        // 6. CATALOG RENDERING, SEARCH & CART (FRICTIONLESS BROWSING)
+        // =====================================================================
+        function renderHomeCategories() {
+            const grid = document.getElementById('home-categories-grid');
+            if (!grid) return;
+            grid.innerHTML = CATEGORIES.map(cat => `
+                <div onclick="selectCategoryAndShop('${cat.name}')" class="glass-panel product-card rounded-3xl p-6 cursor-pointer group text-center space-y-3 border border-white/10 hover:border-aj-gold/50">
+                    <div class="w-12 h-12 rounded-2xl bg-aj-red/20 border border-aj-gold/40 mx-auto flex items-center justify-center text-aj-gold group-hover:scale-110 transition-transform">
+                        <i data-lucide="${cat.icon}" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-display font-bold text-sm text-white group-hover:text-aj-gold transition">${cat.name}</h4>
+                        <p class="text-[11px] text-aj-muted mt-1">${cat.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function renderFeaturedProducts() {
+            const grid = document.getElementById('home-featured-grid');
+            if (!grid) return;
+            if (state.products.length === 0) {
+                renderProductsEmptyState();
+                return;
+            }
+            grid.innerHTML = state.products.slice(0, 8).map(p => renderProductCardHTML(p)).join('');
+            lucide.createIcons();
+        }
+
+        function renderShopCategoryFilters() {
+            const container = document.getElementById('shop-category-filters');
+            if (!container) return;
+            const cats = ['All', ...CATEGORIES.map(c => c.name)];
+            container.innerHTML = cats.map(cat => `
+                <button onclick="filterShopCategory('${cat}')" class="px-4 py-2 rounded-xl text-xs font-bold uppercase transition ${state.activeCategory === cat ? 'bg-aj-red text-white shadow-lg shadow-aj-red/30' : 'bg-aj-card text-aj-muted hover:text-white border border-white/10'}">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        function renderShopProducts() {
+            const grid = document.getElementById('shop-products-grid');
+            if (!grid) return;
+            if (state.products.length === 0) {
+                renderProductsEmptyState();
+                return;
+            }
+
+            const filtered = state.products.filter(p => {
+                const matchesCat = state.activeCategory === 'All' || p.category === state.activeCategory;
+                const matchesPrice = Number(p.price) <= state.maxPriceFilter;
+                return matchesCat && matchesPrice;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-12 text-center text-xs text-aj-muted">No products match this filter.</div>`;
+                return;
+            }
+            grid.innerHTML = filtered.map(p => renderProductCardHTML(p)).join('');
+            lucide.createIcons();
+        }
+
+        function renderProductCardHTML(p) {
+            const isWishlisted = state.wishlist.includes(p.id);
+            const origPrice = Number(p.original_price || p.price);
+            const price = Number(p.price);
+            const discount = origPrice > price ? Math.round(((origPrice - price) / origPrice) * 100) : 0;
+
+            return `
+                <div class="glass-panel product-card rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between group">
+                    <div class="relative bg-aj-black h-56 overflow-hidden">
+                        <img src="${p.image_url}" alt="${p.name}" onerror="this.onerror=null;this.src='https://placehold.co/600x600/171717/D4AF37?text=AJ+TECH';" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        ${discount > 0 ? `<span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-aj-red text-white font-bold text-[10px] uppercase">-${discount}%</span>` : ''}
+                        <button onclick="toggleWishlist('${p.id}')" class="absolute top-3 right-3 p-2 rounded-full bg-aj-black/70 backdrop-blur-md text-white hover:text-aj-red transition" aria-label="Wishlist">
+                            <i data-lucide="heart" class="w-4 h-4 ${isWishlisted ? 'fill-aj-red text-aj-red' : ''}"></i>
+                        </button>
+                    </div>
+                    <div class="p-5 space-y-3 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="uppercase tracking-wider text-[10px] text-aj-gold font-semibold block mb-1">${p.category}</span>
+                            <h3 onclick="openProductModal('${p.id}')" class="font-display font-bold text-base text-white hover:text-aj-gold cursor-pointer transition line-clamp-1">${p.name}</h3>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-white/10">
+                            <div>
+                                <div class="font-display font-black text-lg text-aj-gold">${formatPKR(price)}</div>
+                                ${origPrice > price ? `<div class="text-xs text-aj-muted line-through">${formatPKR(origPrice)}</div>` : ''}
+                            </div>
+                            <button onclick="addToCart('${p.id}')" ${Number(p.stock) <= 0 ? 'disabled' : ''} class="px-4 py-2.5 rounded-xl bg-aj-red hover:bg-aj-redGlow text-white font-bold text-xs uppercase tracking-wider transition disabled:opacity-50">
+                                ${Number(p.stock) > 0 ? 'Add to Bag' : 'Sold Out'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openProductModal(productId) {
+            const p = state.products.find(item => item.id === productId);
+            if (!p) return;
+
+            const specs = Array.isArray(p.specs) ? p.specs : (typeof p.specs === 'string' ? p.specs.split(',') : []);
+            const whatsappMsg = encodeURIComponent(`Hello AJ ACCERSSORES! I am interested in:\n*${p.name}*\nPrice: ${formatPKR(p.price)}`);
+            const waUrl = state.settings.whatsapp_number
+                ? `https://wa.me/${state.settings.whatsapp_number}?text=${whatsappMsg}`
+                : `https://api.whatsapp.com/send?text=${whatsappMsg}`;
+
+            document.getElementById('product-modal-content').innerHTML = `
+                <div class="space-y-4">
+                    <div class="rounded-2xl overflow-hidden bg-aj-black border border-white/10 h-72">
+                        <img src="${p.image_url}" alt="${p.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="text-xs text-emerald-400 font-semibold bg-aj-black/60 p-3 rounded-xl border border-white/10">
+                        ${Number(p.stock) > 0 ? `${p.stock} Units In Stock` : 'Out of Stock'}
+                    </div>
+                </div>
+                <div class="flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <span class="text-xs font-bold uppercase tracking-widest text-aj-gold">${p.category}</span>
+                        <h2 class="font-display font-bold text-2xl text-white">${p.name}</h2>
+                        <div class="font-display font-black text-2xl text-aj-gold">${formatPKR(p.price)}</div>
+                        ${specs.length ? `
+                        <ul class="space-y-1.5 pt-2 border-t border-white/10">
+                            ${specs.map(s => `<li class="text-xs text-aj-muted flex items-center gap-2"><i data-lucide="zap" class="w-3.5 h-3.5 text-aj-redGlow"></i><span>${s.trim()}</span></li>`).join('')}
+                        </ul>` : ''}
+                    </div>
+                    <div class="space-y-2.5 pt-3 border-t border-white/10">
+                        <button onclick="addToCart('${p.id}'); closeProductModal(); toggleDrawer('cart');" ${Number(p.stock) <= 0 ? 'disabled' : ''} class="w-full py-3.5 rounded-xl bg-gradient-to-r from-aj-red to-red-800 text-white font-bold text-xs uppercase tracking-wider">
+                            Add to Bag
+                        </button>
+                        <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="w-full py-3 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i> Enquire on WhatsApp
+                        </a>
+                    </div>
+                </div>
+            `;
+            document.getElementById('product-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); }
+
+        // =====================================================================
+        // 7. CART & MANDATORY REAL AUTH GATE AT CHECKOUT
+        // =====================================================================
+        function saveCartAndWishlist() {
+            localStorage.setItem('aj_cart', JSON.stringify(state.cart));
+            localStorage.setItem('aj_wishlist', JSON.stringify(state.wishlist));
+            updateBadges();
+        }
+
+        function updateBadges() {
+            const count = state.cart.reduce((s, i) => s + i.qty, 0);
+            document.getElementById('cart-badge').textContent = count;
+            document.getElementById('wishlist-badge').textContent = state.wishlist.length;
+        }
+
+        function addToCart(productId) {
+            const p = state.products.find(item => item.id === productId);
+            if (!p || Number(p.stock) <= 0) return;
+
+            const existing = state.cart.find(i => i.id === productId);
+            if (existing) {
+                if (existing.qty >= Number(p.stock)) {
+                    showToast(`Max stock (${p.stock}) reached.`, 'error');
+                    return;
+                }
+                existing.qty += 1;
+            } else {
+                state.cart.push({ id: productId, qty: 1 });
+            }
+            saveCartAndWishlist();
+            renderCartDrawer();
+            showToast(`Added "${p.name}" to bag!`);
+        }
+
+        function updateCartQty(productId, delta) {
+            const idx = state.cart.findIndex(i => i.id === productId);
+            if (idx === -1) return;
+            const p = state.products.find(item => item.id === productId);
+            const next = state.cart[idx].qty + delta;
+            if (next <= 0) {
+                state.cart.splice(idx, 1);
+            } else if (p && next > Number(p.stock)) {
+                showToast(`Only ${p.stock} left in stock.`, 'error');
+                return;
+            } else {
+                state.cart[idx].qty = next;
+            }
+            saveCartAndWishlist();
+            renderCartDrawer();
+        }
+
+        function toggleWishlist(productId) {
+            const idx = state.wishlist.indexOf(productId);
+            if (idx === -1) {
+                state.wishlist.push(productId);
+                showToast('Saved to Wishlist');
+            } else {
+                state.wishlist.splice(idx, 1);
+                showToast('Removed from Wishlist');
+            }
+            saveCartAndWishlist();
+            renderFeaturedProducts();
+            renderShopProducts();
+            renderWishlistDrawer();
+        }
+
+        function calculateCartTotals() {
+            let subtotal = 0;
+            state.cart.forEach(item => {
+                const p = state.products.find(prod => prod.id === item.id);
+                if (p) subtotal += Number(p.price) * item.qty;
+            });
+            const delivery = subtotal === 0 ? 0 : (subtotal >= Number(state.settings.free_shipping_threshold) ? 0 : Number(state.settings.delivery_fee));
+            return { subtotal, delivery, grandTotal: subtotal + delivery };
+        }
+
+        function renderCartDrawer() {
+            const container = document.getElementById('cart-items-container');
+            const summaryBox = document.getElementById('cart-summary-box');
+            const proceedBox = document.getElementById('cart-proceed-box');
+
+            if (state.cart.length === 0) {
+                container.innerHTML = `<div class="py-12 text-center text-xs text-aj-muted">Your Tech Bag is empty. Browse products freely and add items here.</div>`;
+                summaryBox.classList.add('hidden');
+                proceedBox.classList.add('hidden');
+                return;
+            }
+
+            summaryBox.classList.remove('hidden');
+            proceedBox.classList.remove('hidden');
+
+            container.innerHTML = state.cart.map(item => {
+                const p = state.products.find(prod => prod.id === item.id);
+                if (!p) return '';
+                return `
+                    <div class="glass-panel rounded-2xl p-3.5 border border-white/10 flex items-center gap-3">
+                        <img src="${p.image_url}" class="w-14 h-14 rounded-xl object-cover bg-black">
+                        <div class="flex-1 min-w-0">
+                            <h5 class="text-xs font-bold text-white truncate">${p.name}</h5>
+                            <div class="text-xs text-aj-gold font-semibold">${formatPKR(p.price)}</div>
+                            <div class="flex items-center gap-2 mt-1.5">
+                                <button onclick="updateCartQty('${p.id}', -1)" class="w-6 h-6 rounded bg-white/10 text-xs font-bold">-</button>
+                                <span class="text-xs font-bold">${item.qty}</span>
+                                <button onclick="updateCartQty('${p.id}', 1)" class="w-6 h-6 rounded bg-white/10 text-xs font-bold">+</button>
+                            </div>
+                        </div>
+                        <div class="text-xs font-bold text-white">${formatPKR(Number(p.price) * item.qty)}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const { subtotal, delivery, grandTotal } = calculateCartTotals();
+            document.getElementById('cart-subtotal').textContent = formatPKR(subtotal);
+            document.getElementById('cart-delivery').textContent = delivery === 0 ? 'FREE' : formatPKR(delivery);
+            document.getElementById('cart-grand-total').textContent = formatPKR(grandTotal);
+        }
+
+        function renderWishlistDrawer() {
+            const container = document.getElementById('wishlist-items-container');
+            if (state.wishlist.length === 0) {
+                container.innerHTML = `<div class="py-12 text-center text-xs text-aj-muted">No saved wishlist items yet.</div>`;
+                return;
+            }
+            container.innerHTML = state.wishlist.map(id => {
+                const p = state.products.find(prod => prod.id === id);
+                if (!p) return '';
+                return `
+                    <div class="glass-panel rounded-2xl p-3.5 border border-white/10 flex items-center gap-3">
+                        <img src="${p.image_url}" class="w-14 h-14 rounded-xl object-cover bg-black">
+                        <div class="flex-1 min-w-0">
+                            <h5 class="text-xs font-bold text-white truncate">${p.name}</h5>
+                            <div class="text-xs text-aj-gold font-semibold">${formatPKR(p.price)}</div>
+                            <button onclick="addToCart('${p.id}'); toggleDrawer('wishlist'); toggleDrawer('cart');" class="mt-1.5 px-3 py-1 rounded-lg bg-aj-red text-white text-[11px] font-bold">Move to Bag</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Intercept Checkout if User is NOT Signed In
+        function handleProceedToCheckout() {
+            if (state.cart.length === 0) return;
+            if (!state.user) {
+                toggleDrawer('cart');
+                openAuthModal('login', true);
+                return;
+            }
+            toggleDrawer('cart');
+            openCheckoutModal();
+        }
+
+        function openCheckoutModal() {
+            if (!state.user) {
+                openAuthModal('login', true);
+                return;
+            }
+            const { grandTotal } = calculateCartTotals();
+            document.getElementById('checkout-verified-user').textContent = `Authenticated: ${state.user.email}`;
+            document.getElementById('checkout-modal-total').textContent = formatPKR(grandTotal);
+            document.getElementById('checkout-bank-info').textContent = state.settings.bank_details || 'Contact support on WhatsApp for Bank IBAN details.';
+
+            if (state.profile?.full_name && !document.getElementById('chk-name').value) {
+                document.getElementById('chk-name').value = state.profile.full_name;
+            }
+            if (state.profile?.phone && !document.getElementById('chk-phone').value) {
+                document.getElementById('chk-phone').value = state.profile.phone;
+            }
+
+            document.getElementById('checkout-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeCheckoutModal() { document.getElementById('checkout-modal').classList.add('hidden'); }
+
+        function togglePaymentMethodDetails(method) {
+            const bankBox = document.getElementById('payment-bank-box');
+            const gwBox = document.getElementById('payment-gateway-box');
+            const bankRefInput = document.getElementById('chk-bank-ref');
+
+            bankBox.classList.add('hidden');
+            gwBox.classList.add('hidden');
+            bankRefInput.required = false;
+
+            if (method === 'Bank Transfer') {
+                bankBox.classList.remove('hidden');
+                bankRefInput.required = true;
+            } else if (method === 'Online Card / Gateway') {
+                gwBox.classList.remove('hidden');
+            }
+        }
+
+        async function handleSubmitRealOrder(e) {
+            e.preventDefault();
+            if (!ensureSupabaseConnected() || !state.user || state.cart.length === 0) return;
+
+            const btn = document.getElementById('submit-order-btn');
+            btn.disabled = true;
+            btn.textContent = 'Recording Order...';
+
+            const customer_name = document.getElementById('chk-name').value.trim();
+            const customer_phone = document.getElementById('chk-phone').value.trim();
+            const customer_city = document.getElementById('chk-city').value.trim();
+            const payment_method = document.getElementById('chk-payment').value;
+            const payment_reference = document.getElementById('chk-bank-ref').value.trim();
+            const customer_address = document.getElementById('chk-address').value.trim();
+
+            const { subtotal, delivery, grandTotal } = calculateCartTotals();
+            const order_number = 'AJ-' + Math.floor(100000 + Math.random() * 900000);
+
+            // Real payment status (NEVER falsely marked as Paid without verification)
+            let payment_status = 'COD Pending';
+            if (payment_method === 'Bank Transfer') payment_status = 'Awaiting Verification';
+            if (payment_method === 'Online Card / Gateway') payment_status = 'Pending Gateway Verification';
+
+            const items = state.cart.map(item => {
+                const p = state.products.find(prod => prod.id === item.id);
+                return {
+                    product_id: item.id,
+                    name: p ? p.name : 'Item',
+                    price: p ? Number(p.price) : 0,
+                    qty: item.qty
+                };
+            });
+
+            // Estimated delivery window (e.g., 48 hours for standard fulfillment)
+            const estimated_delivery_at = new Date(Date.now() + 48 * 3600 * 1000).toISOString();
+
+            const { error } = await supabaseClient.from('orders').insert({
+                order_number,
+                user_id: state.user.id,
+                user_email: state.user.email,
+                customer_name,
+                customer_phone,
+                customer_city,
+                customer_address,
+                payment_method,
+                payment_status,
+                payment_reference,
+                items,
+                subtotal,
+                delivery_fee: delivery,
+                grand_total: grandTotal,
+                status: 'Order Received',
+                estimated_delivery_at
+            });
+
+            btn.disabled = false;
+            btn.textContent = 'Place Official Order';
+
+            if (error) {
+                showToast(error.message, 'error');
+                return;
+            }
+
+            // Decrement stock safely in Supabase
+            for (const item of items) {
+                const p = state.products.find(prod => prod.id === item.product_id);
+                if (p) {
+                    const nextStock = Math.max(0, Number(p.stock) - item.qty);
+                    await supabaseClient.from('products').update({ stock: nextStock }).eq('id', p.id);
+                }
+            }
+
+            state.cart = [];
+            saveCartAndWishlist();
+            await loadProductsFromSupabase();
+            closeCheckoutModal();
+
+            // Redirect to real configured Online Payment URL if selected
+            if (payment_method === 'Online Card / Gateway' && state.settings.online_payment_url) {
+                const sep = state.settings.online_payment_url.includes('?') ? '&' : '?';
+                window.open(`${state.settings.online_payment_url}${sep}order_ref=${order_number}&amount=${grandTotal}`, '_blank', 'noopener,noreferrer');
+            }
+
+            const itemsSummary = items.map(i => `• ${i.name} (x${i.qty}) - ${formatPKR(i.price * i.qty)}`).join('\n');
+            const waText = encodeURIComponent(
+                `*NEW ORDER - AJ ACCERSSORES*\n` +
+                `Order ID: *#${order_number}*\n` +
+                `Customer: ${customer_name} (${state.user.email})\n` +
+                `Phone: ${customer_phone}\n` +
+                `City: ${customer_city}\n` +
+                `Address: ${customer_address}\n` +
+                `Payment: ${payment_method} (${payment_status})\n\n` +
+                `*Items:*\n${itemsSummary}\n\n` +
+                `*Grand Total: ${formatPKR(grandTotal)}*`
+            );
+
+            document.getElementById('success-order-id').textContent = `#${order_number}`;
+            document.getElementById('success-whatsapp-btn').href = state.settings.whatsapp_number
+                ? `https://wa.me/${state.settings.whatsapp_number}?text=${waText}`
+                : `https://api.whatsapp.com/send?text=${waText}`;
+            document.getElementById('order-success-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeOrderSuccessModal() { document.getElementById('order-success-modal').classList.add('hidden'); }
+
+        // =====================================================================
+        // 8. AUTOMATED REAL-TIME ORDER TRACKING & CUSTOMER PROFILE
+        // =====================================================================
+        function computeAutomatedOrderStatus(order) {
+            if (order.status === 'Cancelled' || order.status === 'Delivered') {
+                return order.status;
+            }
+            const created = new Date(order.created_at).getTime();
+            const estDelivery = order.estimated_delivery_at
+                ? new Date(order.estimated_delivery_at).getTime()
+                : created + 48 * 3600 * 1000;
+            const totalDuration = Math.max(1, estDelivery - created);
+            const progress = (Date.now() - created) / totalDuration;
+
+            let derived = TRACKING_STAGES[0].key;
+            for (const st of TRACKING_STAGES) {
+                if (progress >= st.pct) derived = st.key;
+            }
+            return derived;
+        }
+
+        async function syncOrderStatusIfAdvanced(order) {
+            const derived = computeAutomatedOrderStatus(order);
+            if (derived !== order.status && supabaseClient) {
+                order.status = derived;
+                await supabaseClient.from('orders').update({ status: derived }).eq('id', order.id);
+            }
+            return order;
+        }
+
+        function openTrackModal(presetOrderId = '') {
+            if (presetOrderId) {
+                document.getElementById('track-order-input').value = presetOrderId;
+                lookupAndRenderTrackedOrder(presetOrderId);
+            }
+            document.getElementById('track-order-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeTrackModal() { document.getElementById('track-order-modal').classList.add('hidden'); }
+
+        async function handleTrackOrderSearch(e) {
+            e.preventDefault();
+            const rawId = document.getElementById('track-order-input').value.trim().toUpperCase().replace('#', '');
+            await lookupAndRenderTrackedOrder(rawId);
+        }
+
+        async function lookupAndRenderTrackedOrder(orderNumber) {
+            const box = document.getElementById('track-order-result');
+            box.classList.remove('hidden');
+
+            if (!ensureSupabaseConnected()) return;
+
+            const { data: order, error } = await supabaseClient
+                .from('orders')
+                .select('*')
+                .eq('order_number', orderNumber)
+                .maybeSingle();
+
+            if (error || !order) {
+                box.innerHTML = `<div class="p-4 rounded-xl bg-aj-red/15 border border-aj-red/40 text-xs text-white">No order found with ID <strong>#${orderNumber}</strong>.</div>`;
+                return;
+            }
+
+            await syncOrderStatusIfAdvanced(order);
+            const currentIdx = TRACKING_STAGES.findIndex(s => s.key === order.status);
+
+            box.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="font-display font-bold text-lg text-aj-gold">#${order.order_number}</span>
+                            <span class="text-xs text-aj-muted block">Placed: ${new Date(order.created_at).toLocaleString('en-PK')}</span>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold ${order.status === 'Delivered' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-aj-gold/20 text-aj-gold'}">${order.status}</span>
+                    </div>
+                    <div class="text-xs text-aj-muted bg-aj-black/60 p-3 rounded-xl border border-white/10">
+                        Recipient: <strong class="text-white">${order.customer_name}</strong> (${order.customer_city})<br>
+                        Payment: <strong class="text-white">${order.payment_method}</strong> — <span class="text-aj-gold">${order.payment_status}</span><br>
+                        Total: <strong class="text-white">${formatPKR(order.grand_total)}</strong>
+                    </div>
+                    <div class="space-y-2.5">
+                        ${TRACKING_STAGES.map((st, idx) => {
+                            const done = order.status !== 'Cancelled' && idx <= currentIdx;
+                            return `
+                                <div class="flex items-start gap-3">
+                                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0 ${done ? 'bg-aj-gold text-aj-black' : 'bg-white/10 text-aj-muted'}">${done ? '✓' : idx + 1}</div>
+                                    <div>
+                                        <div class="text-xs font-bold ${done ? 'text-white' : 'text-aj-muted'}">${st.key}</div>
+                                        <div class="text-[11px] text-aj-muted">${st.desc}</div>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function openAccountOrAuth() {
+            if (state.user) openCustomerProfileModal();
+            else openAuthModal('login', false);
+        }
+
+        async function openCustomerProfileModal() {
+            if (!state.user) {
+                openAuthModal('login', false);
+                return;
+            }
+            const name = state.profile?.full_name || state.user.email.split('@')[0];
+            document.getElementById('profile-user-name').textContent = name;
+            document.getElementById('profile-user-email').textContent = state.user.email;
+
+            const avatarBox = document.getElementById('profile-avatar-box');
+            if (state.profile?.avatar_url) {
+                avatarBox.innerHTML = `<img src="${state.profile.avatar_url}" class="w-full h-full object-cover">`;
+            } else {
+                avatarBox.textContent = name.slice(0, 2).toUpperCase();
+            }
+
+            const ordersList = document.getElementById('profile-orders-list');
+            ordersList.innerHTML = `<div class="text-xs text-aj-muted">Loading orders...</div>`;
+            document.getElementById('customer-profile-modal').classList.remove('hidden');
+
+            const { data: myOrders } = await supabaseClient
+                .from('orders')
+                .select('*')
+                .eq('user_id', state.user.id)
+                .order('created_at', { ascending: false });
+
+            if (!myOrders || myOrders.length === 0) {
+                ordersList.innerHTML = `<div class="text-xs text-aj-muted p-4 rounded-xl bg-aj-black/60 border border-white/10 text-center">No orders placed yet.</div>`;
+                return;
+            }
+
+            for (const ord of myOrders) {
+                await syncOrderStatusIfAdvanced(ord);
+            }
+
+            ordersList.innerHTML = myOrders.map(o => `
+                <div class="glass-panel rounded-2xl p-4 border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-display font-bold text-sm text-aj-gold">#${o.order_number}</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold ${o.status === 'Delivered' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-aj-gold/20 text-aj-gold'}">${o.status}</span>
+                        </div>
+                        <div class="text-xs text-aj-muted mt-1">${formatPKR(o.grand_total)} • ${o.payment_method} (${o.payment_status})</div>
+                    </div>
+                    <button onclick="closeCustomerProfileModal(); openTrackModal('${o.order_number}')" class="px-3.5 py-2 rounded-xl bg-aj-red text-white text-xs font-bold uppercase">Track Parcel</button>
+                </div>
+            `).join('');
+        }
+
+        function closeCustomerProfileModal() { document.getElementById('customer-profile-modal').classList.add('hidden'); }
+
+        // =====================================================================
+        // 9. HIDDEN OWNER-ONLY ADMIN CONTROL CENTER & SQL SCHEMA COPY
+        // =====================================================================
+        async function openOwnerPortal(defaultTab = 'products') {
+            navigateTo('admin');
+            if (!supabaseClient) {
+                openSupabaseConfigModal();
+                return;
+            }
+            if (isCurrentUserOwner()) {
+                document.getElementById('admin-login-gate').classList.add('hidden');
+                document.getElementById('admin-dashboard-content').classList.remove('hidden');
+                switchAdminTab(defaultTab);
+                await renderAdminDashboard();
+            } else {
+                document.getElementById('admin-login-gate').classList.remove('hidden');
+                document.getElementById('admin-dashboard-content').classList.add('hidden');
+            }
+        }
+
+        async function handleOwnerEmailLogin(e) {
+            e.preventDefault();
+            if (!ensureSupabaseConnected()) return;
+            const email = document.getElementById('owner-login-email').value.trim();
+            const password = document.getElementById('owner-login-password').value;
+
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                showToast(error.message, 'error');
+                return;
+            }
+
+            if (isCurrentUserOwner()) {
+                document.getElementById('admin-login-gate').classList.add('hidden');
+                document.getElementById('admin-dashboard-content').classList.remove('hidden');
+                await renderAdminDashboard();
+                showToast('Owner Session Verified');
+            } else {
+                showToast('Access Denied: This account does not have Owner role privileges.', 'error');
+            }
+        }
+
+        function switchAdminTab(tab) {
+            ['products', 'orders', 'settings'].forEach(t => {
+                document.getElementById(`admin-tab-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`admin-tab-btn-${t}`);
+                btn.classList.remove('bg-aj-red', 'text-white');
+                btn.classList.add('bg-aj-card', 'text-aj-muted');
+            });
+            document.getElementById(`admin-tab-${tab}`).classList.remove('hidden');
+            const active = document.getElementById(`admin-tab-btn-${tab}`);
+            active.classList.add('bg-aj-red', 'text-white');
+            active.classList.remove('bg-aj-card', 'text-aj-muted');
+        }
+
+        async function renderAdminDashboard() {
+            if (!isCurrentUserOwner() || !supabaseClient) return;
+
+            await loadProductsFromSupabase();
+            const { data: allOrders } = await supabaseClient
+                .from('orders')
+                .select('*')
+                .order('created_at', { ascending: false });
+            state.orders = allOrders || [];
+
+            const activeOrders = state.orders.filter(o => o.status !== 'Cancelled');
+            const revenue = activeOrders.reduce((sum, o) => sum + Number(o.grand_total || 0), 0);
+            const lowStock = state.products.filter(p => Number(p.stock) <= 5).length;
+
+            document.getElementById('kpi-revenue').textContent = formatPKR(revenue);
+            document.getElementById('kpi-orders').textContent = state.orders.length;
+            document.getElementById('kpi-products').textContent = state.products.length;
+            document.getElementById('kpi-low-stock').textContent = lowStock;
+
+            // Products Table
+            const tbody = document.getElementById('admin-products-tbody');
+            tbody.innerHTML = state.products.map(p => `
+                <tr class="hover:bg-white/5">
+                    <td class="px-5 py-3.5 font-semibold text-white flex items-center gap-3">
+                        <img src="${p.image_url}" class="w-10 h-10 rounded-lg object-cover bg-black">
+                        <span>${p.name}</span>
+                    </td>
+                    <td class="px-5 py-3.5 text-aj-muted">${p.category}</td>
+                    <td class="px-5 py-3.5">
+                        <input type="number" value="${p.price}" onchange="adminUpdateProductField('${p.id}', 'price', this.value)" class="w-24 bg-aj-black border border-white/15 rounded-lg px-2 py-1 text-xs text-aj-gold font-bold">
+                    </td>
+                    <td class="px-5 py-3.5">
+                        <input type="number" value="${p.stock}" onchange="adminUpdateProductField('${p.id}', 'stock', this.value)" class="w-20 bg-aj-black border ${Number(p.stock) <= 5 ? 'border-amber-400 text-amber-400' : 'border-white/15 text-white'} rounded-lg px-2 py-1 text-xs font-bold">
+                    </td>
+                    <td class="px-5 py-3.5 text-right">
+                        <button onclick="adminDeleteProduct('${p.id}')" class="p-2 rounded-lg bg-aj-red/20 hover:bg-aj-red text-aj-redGlow hover:text-white transition">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Orders & Payment Verification List
+            const ordersBox = document.getElementById('admin-orders-list');
+            if (state.orders.length === 0) {
+                ordersBox.innerHTML = `<div class="p-8 text-center text-xs text-aj-muted">No customer orders yet.</div>`;
+            } else {
+                ordersBox.innerHTML = state.orders.map(o => `
+                    <div class="p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div class="space-y-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="font-display font-bold text-aj-gold">#${o.order_number}</span>
+                                <span class="text-xs text-aj-muted">${new Date(o.created_at).toLocaleString('en-PK')}</span>
+                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/10 text-white">${o.payment_method}</span>
+                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold ${o.payment_status === 'Paid' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-300'}">${o.payment_status}</span>
+                            </div>
+                            <div class="text-sm text-white font-semibold">${o.customer_name} • ${o.customer_phone} • ${o.customer_city}</div>
+                            <div class="text-xs text-aj-muted">${o.customer_address} ${o.payment_reference ? `• Ref: <strong class="text-white">${o.payment_reference}</strong>` : ''}</div>
+                            <div class="text-xs text-aj-gold">Total: <strong>${formatPKR(o.grand_total)}</strong></div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            ${o.payment_status !== 'Paid' ? `
+                                <button onclick="adminVerifyPayment('${o.id}')" class="px-3 py-2 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold hover:bg-emerald-600/30 transition">
+                                    Verify & Mark Paid
+                                </button>
+                            ` : ''}
+                            <select onchange="adminUpdateOrderStatus('${o.id}', this.value)" class="bg-aj-black border border-white/20 rounded-xl px-3 py-2 text-xs text-white focus:border-aj-gold">
+                                ${['Order Received', 'Order Confirmed', 'Processing & Packed', 'Dispatched via Courier', 'Out for Delivery', 'Delivered', 'Cancelled'].map(st => `
+                                    <option value="${st}" ${o.status === st ? 'selected' : ''}>${st}</option>
+                                `).join('')}
+                            </select>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Populate Settings Form
+            document.getElementById('setting-founder-portrait').value = state.settings.founder_portrait_url || './founder.jpg';
+            document.getElementById('setting-owner-email').value = state.settings.owner_email || state.user.email;
+            document.getElementById('setting-whatsapp').value = state.settings.whatsapp_number || '';
+            document.getElementById('setting-delivery-fee').value = state.settings.delivery_fee || 250;
+            document.getElementById('setting-free-shipping').value = state.settings.free_shipping_threshold || 5000;
+            document.getElementById('setting-bank-details').value = state.settings.bank_details || '';
+            document.getElementById('setting-online-payment-url').value = state.settings.online_payment_url || '';
+
+            lucide.createIcons();
+        }
+
+        async function handleAdminAddProduct(e) {
+            e.preventDefault();
+            if (!ensureSupabaseConnected()) return;
+
+            const name = document.getElementById('new-prod-name').value.trim();
+            const category = document.getElementById('new-prod-category').value;
+            const price = Number(document.getElementById('new-prod-price').value);
+            const original_price = Number(document.getElementById('new-prod-orig-price').value);
+            const stock = Number(document.getElementById('new-prod-stock').value);
+            const image_url = document.getElementById('new-prod-image').value.trim();
+            const specsRaw = document.getElementById('new-prod-specs').value.trim();
+            const specs = specsRaw ? specsRaw.split(',').map(s => s.trim()) : [];
+
+            const { error } = await supabaseClient.from('products').insert({
+                name, category, price, original_price, stock, image_url, specs
+            });
+
+            if (error) {
+                showToast(error.message, 'error');
+                return;
+            }
+            e.target.reset();
+            await renderAdminDashboard();
+            showToast(`Published "${name}" to Supabase!`);
+        }
+
+        async function adminUpdateProductField(id, field, val) {
+            const { error } = await supabaseClient.from('products').update({ [field]: Number(val) }).eq('id', id);
+            if (error) showToast(error.message, 'error');
+            else {
+                await renderAdminDashboard();
+                showToast('Updated in Supabase');
+            }
+        }
+
+        async function adminDeleteProduct(id) {
+            const { error } = await supabaseClient.from('products').delete().eq('id', id);
+            if (error) showToast(error.message, 'error');
+            else {
+                await renderAdminDashboard();
+                showToast('Product deleted');
+            }
+        }
+
+        async function adminVerifyPayment(orderId) {
+            const { error } = await supabaseClient.from('orders').update({ payment_status: 'Paid' }).eq('id', orderId);
+            if (error) showToast(error.message, 'error');
+            else {
+                await renderAdminDashboard();
+                showToast('Payment marked as Verified & Paid');
+            }
+        }
+
+        async function adminUpdateOrderStatus(orderId, status) {
+            const { error } = await supabaseClient.from('orders').update({ status }).eq('id', orderId);
+            if (error) showToast(error.message, 'error');
+            else {
+                await renderAdminDashboard();
+                showToast(`Order status updated to ${status}`);
+            }
+        }
+
+        async function handleAdminSaveSettings(e) {
+            e.preventDefault();
+            if (!ensureSupabaseConnected()) return;
+
+            const payload = {
+                id: 1,
+                founder_portrait_url: document.getElementById('setting-founder-portrait').value.trim() || './founder.jpg',
+                owner_email: document.getElementById('setting-owner-email').value.trim().toLowerCase(),
+                whatsapp_number: document.getElementById('setting-whatsapp').value.replace(/[^0-9]/g, ''),
+                delivery_fee: Number(document.getElementById('setting-delivery-fee').value),
+                free_shipping_threshold: Number(document.getElementById('setting-free-shipping').value),
+                bank_details: document.getElementById('setting-bank-details').value.trim(),
+                online_payment_url: document.getElementById('setting-online-payment-url').value.trim()
+            };
+
+            const { error } = await supabaseClient.from('store_settings').upsert(payload);
+            if (error) {
+                showToast(error.message, 'error');
+                return;
+            }
+            state.settings = { ...state.settings, ...payload };
+            applyFounderPortrait(state.settings.founder_portrait_url);
+            document.getElementById('top-free-shipping').textContent = formatPKR(state.settings.free_shipping_threshold);
+            showToast('Store settings saved to Supabase!');
+        }
+
+        // =====================================================================
+        // 10. SUPABASE CONFIG & ONE-CLICK SQL SCHEMA COPY
+        // =====================================================================
+        function openSupabaseConfigModal() {
+            document.getElementById('cfg-supabase-url').value = SUPABASE_URL;
+            document.getElementById('cfg-supabase-key').value = SUPABASE_ANON_KEY;
+            document.getElementById('supabase-config-modal').classList.remove('hidden');
+        }
+
+        function closeSupabaseConfigModal() { document.getElementById('supabase-config-modal').classList.add('hidden'); }
+
+        function saveSupabaseCredentials(e) {
+            e.preventDefault();
+            const url = document.getElementById('cfg-supabase-url').value.trim();
+            const key = document.getElementById('cfg-supabase-key').value.trim();
+            localStorage.setItem('aj_supabase_url', url);
+            localStorage.setItem('aj_supabase_key', key);
+            showToast('Supabase credentials saved! Reloading...');
+            setTimeout(() => window.location.reload(), 600);
+        }
+
+        function copySupabaseSQLSchema() {
+            const sql = `-- AJ ACCERSSORES PRODUCTION SUPABASE SCHEMA
+create table if not exists public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text unique not null,
+  full_name text,
+  phone text,
+  avatar_url text,
+  role text default 'customer' check (role in ('customer', 'owner')),
+  created_at timestamptz default now()
+);
+
+create table if not exists public.products (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  category text not null,
+  price numeric not null,
+  original_price numeric not null,
+  stock integer not null default 0,
+  image_url text not null,
+  specs jsonb default '[]'::jsonb,
+  created_at timestamptz default now()
+);
+
+create table if not exists public.orders (
+  id uuid primary key default gen_random_uuid(),
+  order_number text unique not null,
+  user_id uuid references auth.users(id),
+  user_email text not null,
+  customer_name text not null,
+  customer_phone text not null,
+  customer_city text not null,
+  customer_address text not null,
+  payment_method text not null,
+  payment_status text not null default 'COD Pending',
+  payment_reference text,
+  items jsonb not null,
+  subtotal numeric not null,
+  delivery_fee numeric not null default 0,
+  grand_total numeric not null,
+  status text not null default 'Order Received',
+  estimated_delivery_at timestamptz,
+  created_at timestamptz default now()
+);
+
+create table if not exists public.store_settings (
+  id integer primary key default 1,
+  owner_email text,
+  whatsapp_number text,
+  delivery_fee numeric default 250,
+  free_shipping_threshold numeric default 5000,
+  bank_details text,
+  online_payment_url text,
+  founder_portrait_url text default './founder.jpg'
+);
+
+alter table public.profiles enable row level security;
+alter table public.products enable row level security;
+alter table public.orders enable row level security;
+alter table public.store_settings enable row level security;
+
+create policy "Public read products" on public.products for select using (true);
+create policy "Owner manage products" on public.products for all using (
+  exists (select 1 from public.profiles where id = auth.uid() and role = 'owner')
+);
+
+create policy "Public read settings" on public.store_settings for select using (true);
+create policy "Owner manage settings" on public.store_settings for all using (
+  exists (select 1 from public.profiles where id = auth.uid() and role = 'owner')
+);
+
+create policy "Users manage own profile" on public.profiles for all using (auth.uid() = id);
+create policy "Authenticated users create orders" on public.orders for insert with check (auth.uid() = user_id);
+create policy "Public track order by number" on public.orders for select using (true);
+create policy "Owner update orders" on public.orders for update using (
+  exists (select 1 from public.profiles where id = auth.uid() and role = 'owner')
+);`;
+
+            const ta = document.createElement('textarea');
+            ta.value = sql;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('Supabase SQL Schema copied! Paste it into your Supabase SQL Editor.');
+        }
+
+        // =====================================================================
+        // 11. UI UTILITIES (NAVIGATION, SEARCH, DRAWERS, TOASTS)
+        // =====================================================================
+        function navigateTo(viewName) {
+            document.querySelectorAll('.spa-view').forEach(sec => sec.classList.add('hidden'));
+            const target = document.getElementById(`view-${viewName}`);
+            if (target) target.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            lucide.createIcons();
+        }
+
+        function scrollToWhyAJ() {
+            navigateTo('home');
+            setTimeout(() => {
+                document.getElementById('why-aj-section')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function scrollToFooter() {
+            document.getElementById('site-footer')?.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectCategoryAndShop(cat) {
+            state.activeCategory = cat;
+            navigateTo('shop');
+            renderShopCategoryFilters();
+            renderShopProducts();
+        }
+
+        function filterShopCategory(cat) {
+            state.activeCategory = cat;
+            renderShopCategoryFilters();
+            renderShopProducts();
+        }
+
+        function handlePriceFilterChange(val) {
+            state.maxPriceFilter = Number(val);
+            document.getElementById('price-range-label').textContent = formatPKR(state.maxPriceFilter);
+            renderShopProducts();
+        }
+
+        function toggleDrawer(type) {
+            const drawer = document.getElementById(`drawer-${type}`);
+            if (drawer.classList.contains('hidden')) {
+                if (type === 'cart') renderCartDrawer();
+                if (type === 'wishlist') renderWishlistDrawer();
+                drawer.classList.remove('hidden');
+            } else {
+                drawer.classList.add('hidden');
+            }
+            lucide.createIcons();
+        }
+
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
+        function toggleMobileSearch() { document.getElementById('mobile-search-bar').classList.toggle('hidden'); }
+
+        function openGeneralWhatsApp() {
+            const msg = encodeURIComponent('Hello AJ ACCERSSORES! I need assistance with your products.');
+            const whatsappNumber = state.settings.whatsapp_number || '923199061682';
+            const url = `https://wa.me/${whatsappNumber}?text=${msg}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+
+        function initSearchListeners() {
+            const input = document.getElementById('global-search-input');
+            const box = document.getElementById('search-suggestions');
+            if (!input || !box) return;
+
+            input.addEventListener('input', (e) => {
+                const q = e.target.value.trim().toLowerCase();
+                if (!q) {
+                    box.classList.add('hidden');
+                    return;
+                }
+                const matches = state.products.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+                box.classList.remove('hidden');
+                box.innerHTML = matches.length === 0
+                    ? `<div class="p-4 text-xs text-aj-muted text-center">No matching products</div>`
+                    : matches.map(p => `
+                        <div onclick="openProductModal('${p.id}'); document.getElementById('search-suggestions').classList.add('hidden');" class="p-3 hover:bg-white/5 flex items-center gap-3 cursor-pointer border-b border-white/5">
+                            <img src="${p.image_url}" class="w-10 h-10 rounded-lg object-cover bg-black">
+                            <div class="flex-1 min-w-0">
+                                <h5 class="text-xs font-bold text-white truncate">${p.name}</h5>
+                                <div class="text-[11px] text-aj-gold font-semibold">${formatPKR(p.price)}</div>
+                            </div>
+                        </div>
+                    `).join('');
+            });
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `glass-panel border ${type === 'error' ? 'border-aj-red text-white' : 'border-aj-gold/50 text-white'} px-4 py-3 rounded-xl shadow-2xl text-xs font-semibold flex items-center gap-2.5 transition-all duration-300 translate-y-2 opacity-0`;
+            toast.innerHTML = `<span class="w-2 h-2 rounded-full ${type === 'error' ? 'bg-aj-redGlow' : 'bg-aj-gold'}"></span><span>${message}</span>`;
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+    </script>
+</body>
+</html>

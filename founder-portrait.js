@@ -21,34 +21,86 @@
       #setting-founder-portrait,
       input[type="file"] { display: none !important; }
       #hero-founder-img { display: block; }
+
+      /* Give the floating spec cards breathing room around the portrait. */
+      #hero-parallax-zone .parallax-badge[data-depth="38"] { translate: -22px 0; }
+      #hero-parallax-zone .parallax-badge[data-depth="48"] { translate: 22px 0; }
+      @media (max-width: 640px) {
+        #hero-parallax-zone .parallax-badge[data-depth="38"] { translate: -8px 0; }
+        #hero-parallax-zone .parallax-badge[data-depth="48"] { translate: 8px 0; }
+      }
+
       #founder-title-overlay {
         position: absolute;
         z-index: 25;
-        left: 1rem;
-        right: 1rem;
-        bottom: 1rem;
+        left: .85rem;
+        right: .85rem;
+        bottom: .85rem;
+        overflow: hidden;
         text-align: center;
         pointer-events: none;
-        padding: .8rem 1rem;
-        border: 1px solid rgba(212, 175, 55, .45);
-        border-radius: 1rem;
-        background: linear-gradient(90deg, rgba(8,8,8,.88), rgba(23,23,23,.72), rgba(8,8,8,.88));
-        box-shadow: 0 0 22px rgba(181, 18, 36, .22);
-        backdrop-filter: blur(8px);
+        padding: .9rem 1rem .85rem;
+        border: 1px solid rgba(243, 208, 102, .62);
+        border-radius: 14px;
+        background:
+          linear-gradient(110deg, rgba(8,8,8,.95), rgba(30,10,15,.88) 48%, rgba(8,8,8,.95));
+        box-shadow: 0 0 14px rgba(225, 29, 51, .35), inset 0 0 18px rgba(212, 175, 55, .08);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+      }
+      #founder-title-overlay::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -45%;
+        width: 35%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #F3D066, #FF2E43, transparent);
+        box-shadow: 0 0 12px rgba(243, 208, 102, .8);
+        animation: founderScan 4s ease-in-out infinite;
+      }
+      #founder-title-overlay::after {
+        content: "AJ  /  LEADERSHIP";
+        display: block;
+        margin-bottom: .35rem;
+        color: rgba(243, 208, 102, .82);
+        font: 700 .52rem/1.3 Inter, sans-serif;
+        letter-spacing: .3em;
       }
       #founder-title-overlay .founder-name {
         color: #fff;
-        font: 800 1rem/1.3 Inter, sans-serif;
+        font: 800 clamp(.82rem, 3.4vw, 1rem)/1.35 Inter, sans-serif;
         letter-spacing: .12em;
         text-transform: uppercase;
-        text-shadow: 0 2px 12px rgba(0,0,0,.8);
+        text-shadow: 0 0 12px rgba(255,255,255,.25), 0 2px 12px rgba(0,0,0,.9);
       }
       #founder-title-overlay .founder-role {
-        margin-top: .2rem;
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        margin-top: .38rem;
         color: #F3D066;
-        font: 700 .68rem/1.4 Inter, sans-serif;
-        letter-spacing: .28em;
+        font: 800 .62rem/1.4 Inter, sans-serif;
+        letter-spacing: .32em;
         text-transform: uppercase;
+      }
+      #founder-title-overlay .founder-role::before,
+      #founder-title-overlay .founder-role::after {
+        content: "";
+        width: 1.15rem;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #FF2E43, #F3D066);
+        box-shadow: 0 0 7px rgba(243, 208, 102, .55);
+      }
+      #founder-title-overlay .founder-role::after { transform: rotate(180deg); }
+      @keyframes founderScan {
+        0% { left: -45%; opacity: 0; }
+        15%, 75% { opacity: 1; }
+        100% { left: 110%; opacity: 0; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #founder-title-overlay::before { animation: none; }
       }
     `;
     d.head.appendChild(style);

@@ -1,4 +1,4 @@
-/* Pin the public hero portrait to the owner's repository image; no visitor uploads. */
+/* Pin the public hero portrait to founder.jpeg and remove visitor upload controls. */
 (function () {
   'use strict';
 
@@ -10,8 +10,8 @@
     const d = frame.contentDocument;
     if (!w || !d) return;
 
-    // The image must be committed beside AJ-Accessories-personal-details.html.
-    const portraitUrl = new URL('founder.jpg', frame.src).href;
+    // The uploaded repository file is founder.jpeg (not founder.jpg).
+    const portraitUrl = new URL('founder.jpeg', frame.src).href;
 
     const style = d.createElement('style');
     style.textContent = `
@@ -21,7 +21,6 @@
       input[type="file"] { display: none !important; }
       #hero-founder-img { display: block; }
 
-      /* Give the floating spec cards breathing room around the portrait. */
       #hero-parallax-zone .parallax-badge[data-depth="38"] { translate: -22px 0; }
       #hero-parallax-zone .parallax-badge[data-depth="48"] { translate: 22px 0; }
       @media (max-width: 640px) {
@@ -70,7 +69,6 @@
         display: inline-flex;
         align-items: center;
         gap: .45rem;
-        margin-top: .2rem;
         color: #F3D066;
         font: 800 .68rem/1.4 Inter, sans-serif;
         letter-spacing: .32em;
@@ -82,7 +80,6 @@
         width: 1.15rem;
         height: 1px;
         background: linear-gradient(90deg, transparent, #FF2E43, #F3D066);
-        box-shadow: 0 0 7px rgba(243, 208, 102, .55);
       }
       #founder-title-overlay .founder-role::after { transform: rotate(180deg); }
       @keyframes founderScan {
@@ -99,14 +96,14 @@
     function pinPortrait() {
       const image = d.getElementById('hero-founder-img');
       if (!image) return;
-      // Keep the image's alt text concise; on a failed load, clear it so the
-      // browser cannot display a long broken-image text line over the hero.
+
       image.alt = 'Founder portrait';
       image.onerror = function () {
         image.alt = '';
         image.style.display = 'none';
         d.getElementById('founder-placeholder-overlay')?.classList.add('hidden');
       };
+
       if (image.src !== portraitUrl) {
         image.style.display = '';
         image.src = portraitUrl;
@@ -130,11 +127,6 @@
 
     pinPortrait();
     const observer = new MutationObserver(pinPortrait);
-    observer.observe(d.documentElement, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['src']
-    });
+    observer.observe(d.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['src'] });
   });
 })();

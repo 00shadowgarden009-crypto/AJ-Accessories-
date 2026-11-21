@@ -1,6 +1,7 @@
 -- AJ Accessories demo catalog: 500 realistic but clearly fictional accessory listings.
 -- Run in Supabase SQL Editor after the products table exists.
 -- Re-running replaces only AJ Demo Catalog rows, preserving your real products.
+-- Every row gets its own stable, unique image URL using its product number as the seed.
 
 begin;
 
@@ -50,17 +51,7 @@ with seed as (
       when 'Power Banks' then 'Portable power bank with USB-C fast charging, multi-device outputs and power-level indication.'
       when 'Smart Watches' then 'Touch-screen smartwatch with activity tracking, call and app notifications and an adjustable strap.'
       else 'Tempered-glass screen protector with smooth touch response, high transparency and edge-to-edge coverage.'
-    end as description,
-    case category
-      when 'Wireless Earbuds' then 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?auto=format&fit=crop&w=800&q=85'
-      when 'Headphones' then 'https://images.unsplash.com/photo-1502856757208-5b13af1c3e8a?auto=format&fit=crop&w=800&q=85'
-      when 'Speakers' then 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=800&q=85'
-      when 'Mobile Covers' then 'https://images.unsplash.com/photo-1601593346740-925612772716?auto=format&fit=crop&w=800&q=85'
-      when 'Fast Chargers' then 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=800&q=85'
-      when 'Power Banks' then 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=800&q=85'
-      when 'Smart Watches' then 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?auto=format&fit=crop&w=800&q=85'
-      else 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?auto=format&fit=crop&w=800&q=85'
-    end as image_url
+    end as description
   from seed
 )
 insert into public.products (
@@ -74,7 +65,7 @@ select
   'AJ Demo Catalog',
   price,
   round(price * (1.12 + ((n % 5) * 0.04)))::numeric(12,2),
-  image_url,
+  'https://picsum.photos/seed/aj-accessory-' || n::text || '/800/800',
   5 + ((n * 11) % 96),
   true,
   n <= 16
@@ -83,20 +74,26 @@ from catalog;
 do $$
 declare
   demo_count integer;
+  unique_image_count integer;
 begin
-  select count(*) into demo_count
+  select count(*), count(distinct image_url)
+    into demo_count, unique_image_count
   from public.products
   where brand = 'AJ Demo Catalog';
 
   if demo_count <> 500 then
     raise exception 'Expected 500 demo products, found %', demo_count;
   end if;
+  if unique_image_count <> 500 then
+    raise exception 'Expected 500 unique image URLs, found %', unique_image_count;
+  end if;
 end;
 $$;
 
 commit;
 
-select brand, category, count(*) as products, min(price) as lowest_pkr, max(price) as highest_pkr
+select brand, category, count(*) as products, min(price) as lowest_pkr, max(price) as highest_pkr,
+       count(distinct image_url) as unique_images
 from public.products
 where brand = 'AJ Demo Catalog'
 group by brand, category

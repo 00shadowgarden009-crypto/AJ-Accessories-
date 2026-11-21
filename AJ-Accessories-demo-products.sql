@@ -1,7 +1,7 @@
 -- AJ Accessories demo catalog: 500 realistic but clearly fictional accessory listings.
 -- Run in Supabase SQL Editor after the products table exists.
 -- Re-running replaces only AJ Demo Catalog rows, preserving your real products.
--- Every row gets its own stable, unique image URL using its product number as the seed.
+-- Image URLs are category-specific and vary between listings.
 
 begin;
 
@@ -51,7 +51,57 @@ with seed as (
       when 'Power Banks' then 'Portable power bank with USB-C fast charging, multi-device outputs and power-level indication.'
       when 'Smart Watches' then 'Touch-screen smartwatch with activity tracking, call and app notifications and an adjustable strap.'
       else 'Tempered-glass screen protector with smooth touch response, high transparency and edge-to-edge coverage.'
-    end as description
+    end as description,
+    case category
+      when 'Wireless Earbuds' then array[
+        'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46',
+        'https://images.unsplash.com/photo-1590658268037-6bf12165a8df',
+        'https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb',
+        'https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7'
+      ][(n % 4) + 1]
+      when 'Headphones' then array[
+        'https://images.unsplash.com/photo-1502856757208-5b13af1c3e8a',
+        'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb',
+        'https://images.unsplash.com/photo-1487215078519-e21cc028cb29',
+        'https://images.unsplash.com/photo-1545127398-14699f92334b'
+      ][(n % 4) + 1]
+      when 'Speakers' then array[
+        'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1',
+        'https://images.unsplash.com/photo-1589003077984-894e133dabab',
+        'https://images.unsplash.com/photo-1584679133445-8ca7b7c6e7d9',
+        'https://images.unsplash.com/photo-1585298723682-7115561c51b7'
+      ][(n % 4) + 1]
+      when 'Mobile Covers' then array[
+        'https://images.unsplash.com/photo-1601593346740-925612772716',
+        'https://images.unsplash.com/photo-1598327105666-5b89351aff97',
+        'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9',
+        'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c'
+      ][(n % 4) + 1]
+      when 'Fast Chargers' then array[
+        'https://images.unsplash.com/photo-1583863788434-e58a36330cf0',
+        'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5',
+        'https://images.unsplash.com/photo-1615529162924-f8605388461d',
+        'https://images.unsplash.com/photo-1591206114872-ae56a1a2c8e7'
+      ][(n % 4) + 1]
+      when 'Power Banks' then array[
+        'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5',
+        'https://images.unsplash.com/photo-1609592424829-7ed3b9f72f5e',
+        'https://images.unsplash.com/photo-1587036813737-0ca2f9b4e0d1',
+        'https://images.unsplash.com/photo-1620812097331-ff6361554882'
+      ][(n % 4) + 1]
+      when 'Smart Watches' then array[
+        'https://images.unsplash.com/photo-1579586337278-3befd40fd17a',
+        'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d',
+        'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1',
+        'https://images.unsplash.com/photo-1544117519-31a4b719223d'
+      ][(n % 4) + 1]
+      else array[
+        'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6',
+        'https://images.unsplash.com/photo-1616348436168-de43ad0db179',
+        'https://images.unsplash.com/photo-1556656793-08538906a9f8',
+        'https://images.unsplash.com/photo-1605236453806-6ff36851218e'
+      ][(n % 4) + 1]
+    end || '?auto=format&fit=crop&w=800&h=800&q=85&demo=' || n::text as image_url
   from seed
 )
 insert into public.products (
@@ -65,7 +115,7 @@ select
   'AJ Demo Catalog',
   price,
   round(price * (1.12 + ((n % 5) * 0.04)))::numeric(12,2),
-  'https://picsum.photos/seed/aj-accessory-' || n::text || '/800/800',
+  image_url,
   5 + ((n * 11) % 96),
   true,
   n <= 16
@@ -74,26 +124,20 @@ from catalog;
 do $$
 declare
   demo_count integer;
-  unique_image_count integer;
 begin
-  select count(*), count(distinct image_url)
-    into demo_count, unique_image_count
+  select count(*) into demo_count
   from public.products
   where brand = 'AJ Demo Catalog';
 
   if demo_count <> 500 then
     raise exception 'Expected 500 demo products, found %', demo_count;
   end if;
-  if unique_image_count <> 500 then
-    raise exception 'Expected 500 unique image URLs, found %', unique_image_count;
-  end if;
 end;
 $$;
 
 commit;
 
-select brand, category, count(*) as products, min(price) as lowest_pkr, max(price) as highest_pkr,
-       count(distinct image_url) as unique_images
+select brand, category, count(*) as products, min(price) as lowest_pkr, max(price) as highest_pkr
 from public.products
 where brand = 'AJ Demo Catalog'
 group by brand, category
